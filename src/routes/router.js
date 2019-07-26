@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { login, register, logout } = require(`./`)
 
 
 noSuchPageHandler = (req, res) => {
@@ -7,8 +8,11 @@ noSuchPageHandler = (req, res) => {
 
 }
 router.get(`/`, (req, res) => {
-    res.end(`Hello World`)
+    res.end(`Basic api response`)
 })
+    .post(`/login`, login)
+    .post(`/register`, register)
+    .get(`/logout`, logout)
     .get(`*`, noSuchPageHandler)
 
 module.exports = router;
