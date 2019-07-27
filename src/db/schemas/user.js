@@ -1,29 +1,29 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const timestamp = require('../middleware/timestamp');
-
-const userNameToLower = user => {
-    return user.userName.toLowerCase().trim
-}
+const timestamp = require("../middleware/timestamp");
 
 const userSchema = new Schema(
-    {
-        userName: { type: String, unique: true, required: true, userNameToLower },
-        password: { type: String, required: true },
-        userData: {
-            type: Object,
-            email: { type: String, unique: true },
-            token: { type: Array }
-        },
-        eatsRecorded: { type: Array }
+  {
+    userName: {
+      type: String,
+    //   unique: true,
+      required: true,
     },
-    {
-        timestamps: true
-    }
+    password: { type: String, required: true },
+    userData: {
+      type: Object,
+      email: { type: String },
+      token: { type: Array }
+    },
+    eatsRecorded: { type: Array }
+  },
+  {
+    timestamps: true
+  }
 );
 
 userSchema.plugin(timestamp);
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;

@@ -1,47 +1,101 @@
-const User = require('../../../db/schemas/user');
-const bcrypt = require('bcrypt');
+const User = require("../../../db/schemas/user");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { secret } = require(`../../../config`);
 
 const register = (req, res) => {
-    const user = req.body
-    const hashedPassword = bcrypt.hashSync(user.password.trim(), 10);
-    const userNameLower = user.userName.toLowerCase().trim()
-    const userData = { ...user, password: hashedPassword, userName: userNameLower, userData: { email: '123@123.ru' } };
-    const newUser = new User(userData);
+  const user = req.body;
 
+  if (!user.password) {
+    sendError(`Password is required`);
+  }
 
+  const hashedPassword = bcrypt.hashSync(user.password.trim(), 10);
+  const userNameLower = user.userName.toLowerCase().trim();
 
-    const sendResponse = user => {
-        res.json({
-            status: 'success',
-            user
-        });
-    };
+  const createToken = user => {
+    const token = jwt.sign({ user, createdDate: Date.now() }, secret, {
+      expiresIn: `30d`
+    });
+    return token;
+  };
 
+  const newUserData = {
+    ...user,
+    password: hashedPassword,
+    userName: userNameLower
+  };
 
-    const sendError = (error) => {
-        let errMessage = 'user was not saved';
-        console.log('user err', error);
+  const newUser = new User(newUserData);
 
-        if (error && error.message && !error.code) {
-            errMessage = error.message;
-        } else if (error && error.code === 11000 && error.errmsg.includes('email')) {
-            errMessage = 'email already exist';
-        } else if (error && error.code === 11000 && error.errmsg.includes('userName')) {
-            console.log(JSON.stringify(error));
-            errMessage = 'userName already exist';
-        }
+  const sendResponse = user => {
+    res.json({
+      status: "success",
+      user
+    });
+  };
 
-        res.status(400).json({
-            err: errMessage,
-        });
-
+  function sendError(error) {
+    let errMessage = "user was not saved";
+    console.log("user err", error);
+    if (error === `Password is required`) {
+      errMessage = error;
+    }
+    if (error && error.message && !error.code) {
+      errMessage = error.message;
+    } else if (
+      error &&
+      error.code === 11000 &&
+      error.errmsg.includes("email")
+    ) {
+      errMessage = "email already exist";
+    } else if (
+      error &&
+      error.code === 11000 &&
+      error.errmsg.includes("userName")
+    ) {
+      console.log(JSON.stringify(error));
+      errMessage = "userName already exist";
     }
 
-    newUser.save()
+    res.status(400).json({
+      err: errMessage
+    });
+  }
+  newUser
+    .save()
+    .then(savedUser => {
+      console.log(`savedUser: `, savedUser);
+
+      User.findById(savedUser._id) // Находим только что созданого пользователя в БД
+        .then(userFromDB => {
+          console.log(`userFromDB:`, userFromDB);
+          userFromDB.userData = {
+            ...userFromDB.userData, // Распыляем юзердату что б ничего не затереть
+            token: [createToken(userFromDB)] // Добавляем токен в котором записано сам пользователь со СВОИМ АЙДИ
+          };
+          return userFromDB; // Возвращяем нашего юзера уже с записанным токеном
+        })
+        .then(userWithToken => {
+          User.findByIdAndUpdate(
+            { _id: userWithToken.id }, // фильтруем юзера по айди
+            userWithToken //заменяем его на нового
+          );
+          return userWithToken;
+        })
         .then(sendResponse)
-        .catch(sendError)
+        .catch(sendError);
+    })
+    .catch(sendError);
 
+  //   newUser
+  //     .save()
+  //     .then(savedUser => {
+  //       console.log(savedUser);
+  //       return savedUser;
+  //     })
+  //     .then(sendResponse)
+  //     .catch(sendError);
+};
 
-}
-
-module.exports = register
+module.exports = register;
