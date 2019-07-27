@@ -1,7 +1,5 @@
-const send404 = require('../../utils/send404')
-const User = require('../../db/schemas/user');
+const User = require('../../../db/schemas/user');
 const bcrypt = require('bcrypt');
-const crypto = require(`crypto`)
 
 const register = (req, res) => {
     const user = req.body
@@ -13,7 +11,6 @@ const register = (req, res) => {
 
 
     const sendResponse = user => {
-        const { userName, points, activeBets, finishedBets } = user;
         res.json({
             status: 'success',
             user

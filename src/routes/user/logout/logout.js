@@ -1,4 +1,4 @@
-const send404 = require("../../utils/send404");
+const send404 = require("../../../utils/send404");
 
 const logout = (req, res) => {
   if (0) {

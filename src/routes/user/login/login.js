@@ -1,4 +1,4 @@
-const send404 = require('../../utils/send404')
+const send404 = require('../../../utils/send404')
 
 const login = (req, res) => {
     const user = req.body
