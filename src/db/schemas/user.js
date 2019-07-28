@@ -6,7 +6,7 @@ const userSchema = new Schema(
   {
     userName: {
       type: String,
-    //   unique: true,
+      //   unique: true,
       required: true,
     },
     password: { type: String, required: true },
@@ -23,7 +23,7 @@ const userSchema = new Schema(
 );
 
 userSchema.plugin(timestamp);
-
+mongoose.set('useFindAndModify', false);
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;

@@ -68,22 +68,27 @@ const register = (req, res) => {
       console.log(`savedUser: `, savedUser);
 
       User.findById(savedUser._id) // Находим только что созданого пользователя в БД
+        // .then(userFromDB => {
+        //   console.log(`userFromDB:`, userFromDB);
+        //   userFromDB.userData = {
+        //     ...userFromDB.userData, // Распыляем юзердату что б ничего не затереть
+        //     token: [createToken(userFromDB)] // Добавляем токен в котором записано сам пользователь со СВОИМ АЙДИ
+        //   };
+        //   return userFromDB; // Возвращяем нашего юзера уже с записанным токеном
+        // })
         .then(userFromDB => {
-          console.log(`userFromDB:`, userFromDB);
-          userFromDB.userData = {
-            ...userFromDB.userData, // Распыляем юзердату что б ничего не затереть
-            token: [createToken(userFromDB)] // Добавляем токен в котором записано сам пользователь со СВОИМ АЙДИ
-          };
-          return userFromDB; // Возвращяем нашего юзера уже с записанным токеном
-        })
-        .then(userWithToken => {
           User.findByIdAndUpdate(
-            { _id: userWithToken.id }, // фильтруем юзера по айди
-            userWithToken //заменяем его на нового
-          );
-          return userWithToken;
+            userFromDB.id, // фильтруем юзера по айди
+            { $set: { userData: { token: [createToken(userFromDB)] } } },
+            { new: true }, //заменяем его на нового
+            (err, doc) => {
+              console.log(`err or doc: `, err ? err : doc);
+            }
+          )
+            .then(sendResponse)
+            .catch(sendError);
         })
-        .then(sendResponse)
+        // .then(sendResponse)
         .catch(sendError);
     })
     .catch(sendError);
