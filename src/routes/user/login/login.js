@@ -36,9 +36,9 @@ const login = (req, res) => {
     });
   }
 
-  const createToken = user => {
-    const token = jwt.sign({ user, createdDate: Date.now() }, secret, {
-      expiresIn: `5s`,
+  const createToken = userId => {
+    const token = jwt.sign({ userId, createdDate: Date.now() }, secret, {
+      expiresIn: `30d`,
       noTimestamp: true
     });
     return token;

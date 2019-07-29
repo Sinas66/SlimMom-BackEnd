@@ -21,8 +21,7 @@ const logout = (req, res) => {
 
   const sendResponse = user => {
     res.json({
-      status: "success",
-      user
+      status: "success"
     });
   };
 
@@ -63,8 +62,10 @@ const logout = (req, res) => {
   });
 
   if (isTokenValid) {
-    var decoded2 = jwt.decode(token);
-    console.log(`decoded2: `, decoded2);
+    const userId = jwt.decode(token).userId;
+    User.findByIdAndUpdate(userId, { $unset: { token: `` } }, { new: true })
+      .then(sendResponse)
+      .catch(sendError);
   }
 };
 
