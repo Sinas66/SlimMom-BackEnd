@@ -4,20 +4,12 @@ const bcrypt = require("bcrypt");
 const User = require("../../../db/schemas/user");
 
 const logout = (req, res) => {
-  // проверяем токен
-  // парсим токен, берем айди, удаляем по айди токен
-  // или мидлвар который будет парсит токен, проверяет его и добавляет его в реквест если ок
-
-  console.log(`req.user: `, req.user);
-  // console.log(`req.user.token: `, !!req.user.token);
-
   if (!req.user) {
-    sendError403(`no token(`);
+    sendError403(`no token(`); // Если нет токена то шлем ошибку
     return;
   }
 
-  const token = req.user.token.split(` `)[1];
-  console.log(`token: `, token);
+  const token = req.user.token.split(` `)[1]; // Парсим сам токен
 
   const sendResponse = user => {
     res.json({
@@ -51,6 +43,9 @@ const logout = (req, res) => {
     if (err) {
       if (err.message === "jwt expired") {
         sendError403(`Token expired`);
+        return false;
+      }else {
+        sendError403(err);
         return false;
       }
     }
