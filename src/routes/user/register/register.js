@@ -8,27 +8,23 @@ const register = (req, res) => {
 
   if (!user.password) {
     sendError(`Password is required`);
+    return;
+  }
+  if (!user.userName) {
+    sendError(`userName is required`);
+    return;
   }
 
   const hashedPassword = bcrypt.hashSync(user.password.trim(), 10);
-  const userNameLower = user.userName
-
-  // const createToken = user => {
-  //   const token = jwt.sign({ user, createdDate: Date.now() }, secret, {
-  //     expiresIn: `30d`
-  //   });
-  //   return token;
-  // };
 
   const newUserData = {
     ...user,
-    password: hashedPassword,
-    userName: userNameLower
+    password: hashedPassword
   };
 
   const newUser = new User(newUserData);
 
-  const userId = newUser._id
+  const userId = newUser._id;
   newUser.token = jwt.sign({ userId, createdDate: Date.now() }, secret, {
     expiresIn: `30d`
   });
@@ -43,7 +39,7 @@ const register = (req, res) => {
   function sendError(error) {
     let errMessage = "user was not saved";
     console.log("user err", error);
-    if (error === `Password is required`) {
+    if (error === `Password is required` || error === `userName is required`) {
       errMessage = error;
     }
     if (error && error.message && !error.code) {
@@ -69,9 +65,15 @@ const register = (req, res) => {
   }
   newUser
     .save()
+    .then(userFromDB => {
+      const respData = {
+        userName: userFromDB.userName,
+        token: userFromDB.token
+      };
+      return respData;
+    })
     .then(sendResponse)
     .catch(sendError);
-
 };
 
 module.exports = register;
