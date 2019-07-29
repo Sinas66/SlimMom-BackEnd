@@ -11,7 +11,7 @@ const logout = (req, res) => {
 
   const token = req.user.token.split(` `)[1]; // Парсим сам токен
 
-  const sendResponse = user => {
+  const sendResponse = () => {
     res.json({
       status: "success"
     });
