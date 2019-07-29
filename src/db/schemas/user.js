@@ -8,13 +8,15 @@ const userSchema = new Schema(
       type: String,
       //   unique: true,
       required: true,
+      lowercase: true,
+      trim: true,
     },
     password: { type: String, required: true },
     userData: {
       type: Object,
       email: { type: String },
-      token: { type: Array }
     },
+    token: { type: String },
     eatsRecorded: { type: Array }
   },
   {

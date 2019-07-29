@@ -1,10 +1,18 @@
-const send404 = require("../../../utils/send404");
+const jwt = require("jsonwebtoken");
+const { secret } = require(`../../../config`);
+const bcrypt = require("bcrypt");
+const User = require("../../../db/schemas/user");
 
 const logout = (req, res) => {
-  if (0) {
-    send404(req, res, `wow`);
-  }
-  res.json({ logout: "ok" });
+  // проверяем токен
+  // парсим токен, берем айди, удаляем по айди токен
+  // или мидлвар который будет парсит токен, проверяет его и добавляет его в реквест если ок
+
+  console.log(req.user);
+
+
+  const token = req
+
 };
 
 module.exports = logout;

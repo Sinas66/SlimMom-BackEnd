@@ -11,14 +11,14 @@ const register = (req, res) => {
   }
 
   const hashedPassword = bcrypt.hashSync(user.password.trim(), 10);
-  const userNameLower = user.userName.toLowerCase().trim();
+  const userNameLower = user.userName
 
-  const createToken = user => {
-    const token = jwt.sign({ user, createdDate: Date.now() }, secret, {
-      expiresIn: `30d`
-    });
-    return token;
-  };
+  // const createToken = user => {
+  //   const token = jwt.sign({ user, createdDate: Date.now() }, secret, {
+  //     expiresIn: `30d`
+  //   });
+  //   return token;
+  // };
 
   const newUserData = {
     ...user,
@@ -27,6 +27,11 @@ const register = (req, res) => {
   };
 
   const newUser = new User(newUserData);
+
+  const userId = newUser._id
+  newUser.token = jwt.sign({ userId, createdDate: Date.now() }, secret, {
+    expiresIn: `30d`
+  });
 
   const sendResponse = user => {
     res.json({
@@ -64,43 +69,9 @@ const register = (req, res) => {
   }
   newUser
     .save()
-    .then(savedUser => {
-      console.log(`savedUser: `, savedUser);
-
-      User.findById(savedUser._id) // Находим только что созданого пользователя в БД
-        // .then(userFromDB => {
-        //   console.log(`userFromDB:`, userFromDB);
-        //   userFromDB.userData = {
-        //     ...userFromDB.userData, // Распыляем юзердату что б ничего не затереть
-        //     token: [createToken(userFromDB)] // Добавляем токен в котором записано сам пользователь со СВОИМ АЙДИ
-        //   };
-        //   return userFromDB; // Возвращяем нашего юзера уже с записанным токеном
-        // })
-        .then(userFromDB => {
-          User.findByIdAndUpdate(
-            userFromDB.id, // фильтруем юзера по айди
-            { $set: { userData: { token: [createToken(userFromDB)] } } },
-            { new: true }, //заменяем его на нового
-            (err, doc) => {
-              console.log(`err or doc: `, err ? err : doc);
-            }
-          )
-            .then(sendResponse)
-            .catch(sendError);
-        })
-        // .then(sendResponse)
-        .catch(sendError);
-    })
+    .then(sendResponse)
     .catch(sendError);
 
-  //   newUser
-  //     .save()
-  //     .then(savedUser => {
-  //       console.log(savedUser);
-  //       return savedUser;
-  //     })
-  //     .then(sendResponse)
-  //     .catch(sendError);
 };
 
 module.exports = register;

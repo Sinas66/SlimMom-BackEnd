@@ -24,6 +24,13 @@ const startServer = port => {
         .use(morgan(':method :url :status :res[content-length] - :response-time ms')) // В консоле показывает действие
         .use(favicon(faviconPath)) // Добавляем фавикон
         .use(`/`, express.static(staticPublicPath)) // Возвращяет index.html и дает доступ к файлам
+        .use((req, res, next) => {
+            console.log(`req.headers: `, req.headers.authorization);
+            req.user.token = req.headers.authorization;
+
+
+            next()
+        })
         .use(`/api/v1`, router) // Путь для нашего роутера
         .use(errorHandler); // Отлавливаем ошибки сервера
     app.listen(port); // Порт на котором работает сервер
