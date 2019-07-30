@@ -53,7 +53,7 @@ const moveImage = (fileObject, time) => {
         .then(() => {
             return PATH_TO_REGULAR_EXEL;
         })
-        .catch(console.log)
+        .catch(err => err)
 };
 
 
