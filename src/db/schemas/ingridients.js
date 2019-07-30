@@ -8,6 +8,7 @@ const ingridientsSchema = new Schema(
             type: String,
             required: true,
             trim: true,
+            unique: true,
         },
         protein: { type: Number, required: true },
         fat: { type: Number, required: true },

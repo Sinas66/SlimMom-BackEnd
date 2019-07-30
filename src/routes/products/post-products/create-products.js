@@ -5,14 +5,11 @@ const util = require('util');
 const Ingredient = require(`../../../db/schemas/ingridients`)
 const readXlsxFile = require('read-excel-file/node');
 
-
-
 const exelTmpFolder = `tmp/Ingredients-exel`;
 const exelFolder = `Ingredients-exel`;
 const TMP_EXEL_FOLDER = path.join(__dirname, '../../../../private', exelTmpFolder)
 const EXEL_FOLDER = path.join(__dirname, '../../../../private', exelFolder)
 
-console.log(new Date().toLocaleString());
 
 const renameFile = util.promisify(fs.rename);
 
@@ -29,21 +26,21 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 
-const createFolder = (...mass) => {
-    mass.forEach(fileFolder => {
-        if (!fs.existsSync(fileFolder)) {
-            fs.mkdirSync(fileFolder)
-            console.log(fileFolder, ' is created')
-        }
-    }
-    )
-}
+// const createFolder = (...mass) => {
+//     mass.forEach(fileFolder => {
+//         if (!fs.existsSync(fileFolder)) {
+//             fs.mkdirSync(fileFolder)
+//             console.log(fileFolder, ' is created')
+//         }
+//     }
+//     )
+// }
 
 
 const moveImage = (fileObject, time) => {
 
     const fileNewName = String(time + ` ` + fileObject.originalname)
-    console.log(fileNewName);
+    console.log(`new FileName: `, fileNewName);
 
 
     const PATH_TO_TMP_EXEL = path.join(TMP_EXEL_FOLDER, fileObject.originalname);
@@ -88,16 +85,24 @@ const saveInDB = path => {
         }
     }
 
-
-
-
-
     return readXlsxFile(fs.createReadStream(path), { schema })
         .then(({ rows, errors }) => {
-            return Ingredient.insertMany(rows, { ordered: false }).
-                then(() => {
+            return Ingredient.insertMany(rows, { ordered: false, rawResult: false }).
+                then((data) => {
+                    const saved = data.map(el => {
+                        const item = {
+                            id: el._id, name: el.name,
+                            protein: el.protein,
+                            fat: el.fat,
+                            сarbohydrate: el.сarbohydrate,
+                            energy: el.energy
+                        }
+                        return item
+                    })
+
                     const respData = {
-                        savedData: rows,
+                        savedData: saved,
+                        // savedRows: rows,
                         dataWithError: errors
                     }
                     return respData
