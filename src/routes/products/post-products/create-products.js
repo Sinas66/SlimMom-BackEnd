@@ -92,22 +92,17 @@ const saveInDB = path => {
 
 
 
-    console.log(`path: `, path);
     return readXlsxFile(fs.createReadStream(path), { schema })
         .then(({ rows, errors }) => {
-            // console.log(`rows: `, rows);
-            return Ingredient.insertMany(rows, (err, doc) => {
-                if (err) {
-                    throw err
-                }
-                return rows
-
-            }).
-                then(data => {
-                    console.log(`data: `, data);
-
+            return Ingredient.insertMany(rows, { ordered: false }).
+                then(() => {
+                    const respData = {
+                        savedData: rows,
+                        dataWithError: errors
+                    }
+                    return respData
                 })
-                .catch((err) => {
+                .catch(err => {
                     return err
                 })
 
@@ -137,7 +132,7 @@ const createProducts = (req, res) => {
     const sendResp = data => {
         res.json({
             status: `success`,
-            path: data
+            result: data
         })
     }
 
