@@ -1,20 +1,20 @@
 const setTimestamp = schema => {
-    schema.add({
-        createdAt: Date,
-        updatedAt: Date
-    });
+	schema.add({
+		createdAt: Date,
+		updatedAt: Date,
+	});
 
-    schema.pre('save', function (next) {
-        const now = Date.now();
+	schema.pre('save', next => {
+		const now = Date.now();
 
-        this.updatedAt = now;
+		this.updatedAt = now;
 
-        if (!this.createdAt) {
-            this.createdAt = now;
-        }
+		if (!this.createdAt) {
+			this.createdAt = now;
+		}
 
-        next();
-    });
+		next();
+	});
 };
 
 module.exports = setTimestamp;
