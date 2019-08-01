@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const { secret } = require(`../../../config`);
-const User = require('../../../db/schemas/user');
+const User = require('../../../model/user');
 
 const logout = (req, res) => {
 	const sendResponse = () => {

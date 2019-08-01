@@ -1,5 +1,5 @@
-const app = require(`./app/app`);
 const express = require(`express`);
+const app = express();
 const helmet = require('helmet');
 const morgan = require('morgan');
 const cors = require('cors');

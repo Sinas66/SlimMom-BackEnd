@@ -1,8 +1,19 @@
 const express = require('express');
-
 const router = express.Router();
+const multer = require('multer');
 const { login, register, logout, updateUser } = require(`./`);
 const { createProducts } = require(`./products`);
+
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, './uploads/')
+},
+	filename(req, file, cb) {
+		cb(null, file.originalname);
+	},
+});
+
+const upload = multer({ storage });
 
 const noSuchPageHandler = (req, res) => {
 	res.end(`nooo`);
@@ -21,7 +32,7 @@ router
 	// .put(`/calc`, null)
 
 	// роут для обновления бд продуктов
-	.post(`/update-products`, createProducts)
+	.post(`/update-products`, upload.single('file'), createProducts)
 	// .put(`/update-products`, null)
 	// .get(`/products`, null)
 	// .delete(`/delete-all-products`, null)

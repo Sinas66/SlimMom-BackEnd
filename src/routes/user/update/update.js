@@ -1,4 +1,4 @@
-const User = require('../../../db/schemas/user');
+const User = require('../../../model/user');
 
 const updateUser = (req, res) => {
 	const userUpdateData = req.body;

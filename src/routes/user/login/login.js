@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const { secret } = require(`../../../config`);
 const bcrypt = require('bcrypt');
-const User = require('../../../db/schemas/user');
+const User = require('../../../model/user');
 
 const errors = {
 	userExist: 'User doesnt exist',
