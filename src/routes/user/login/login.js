@@ -4,13 +4,15 @@ const { secret } = require(`../../../config`);
 const bcrypt = require('bcrypt');
 const User = require('../../../db/schemas/user');
 
+const errors = {
+	userExist: 'User doesnt exist',
+	userRequired: `userName is required`,
+	passInvalid: `Password is ivalid`,
+	passRequired: `	Password is required`,
+};
+
 const login = (req, res) => {
 	const user = req.body;
-
-	const errors = {
-		userExist: 'User doesnt exist',
-		pasInvalid: `Password is ivalid`,
-	};
 
 	const sendResponse = data => {
 		res.json({
@@ -21,7 +23,6 @@ const login = (req, res) => {
 
 	const sendError = error => {
 		let errMessage = 'User doesnt exist';
-		console.log(error);
 
 		if (error) {
 			errMessage = error;
@@ -32,11 +33,12 @@ const login = (req, res) => {
 	};
 
 	if (!user.userName) {
-		sendError(`userName is required`); // Если нет userName то шлем ошибку
+		// throw errors.userRequired;
+		sendError(errors.userRequired); // Если нет userName то шлем ошибку
 		return;
 	}
 	if (!user.password) {
-		sendError(`Password is required`); // Если нет Password то шлем ошибку
+		sendError(errors.passRequired); // Если нет Password то шлем ошибку
 		return;
 	}
 
@@ -61,7 +63,7 @@ const login = (req, res) => {
 			bcrypt
 				.compare(userPasswordReq, usersFromDB[0].password) // сравниваем пароли
 				.then(resp => {
-					if (!resp) throw errors.pasInvalid;
+					if (!resp) throw errors.passInvalid;
 					return usersFromDB[0];
 				})
 				.then(userFromDB => {

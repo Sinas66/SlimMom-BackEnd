@@ -16,7 +16,7 @@ const register = (req, res) => {
 
 	const sendError = error => {
 		let errMessage = 'user was not saved';
-		console.log('user err', error);
+		// console.log('user err', error);
 		if (error === `Password is required` || error === `userName is required`) {
 			errMessage = error;
 		}
@@ -33,7 +33,7 @@ const register = (req, res) => {
 			error.code === 11000 &&
 			error.errmsg.includes('userName')
 		) {
-			console.log(JSON.stringify(error));
+			// console.log(JSON.stringify(error));
 			errMessage = 'userName already exist';
 		}
 
