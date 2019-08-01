@@ -55,7 +55,7 @@ const moveImage = async (fileObject, time) => {
 
 const saveInDB = filePath => {
 	const schema = {
-		Наименование: {
+		Наименовgание: {
 			prop: 'name',
 			type: String,
 		},
