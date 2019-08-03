@@ -41,7 +41,6 @@ const register = (req, res) => {
 		});
 	};
 
-
 	const newUserData = {
 		...user,
 		password: bcrypt.hashSync(user.password.trim(), 10),
@@ -53,7 +52,7 @@ const register = (req, res) => {
 		.save()
 		.then(userFromDB => ({
 			userName: userFromDB.userName,
-			token: userFromDB.token
+			token: userFromDB.token,
 		}))
 		.then(sendResponse)
 		.catch(sendError);

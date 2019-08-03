@@ -1,10 +1,12 @@
 const express = require('express');
+
 const router = express.Router();
 const { login, register, logout, updateUser } = require(`./`);
-const { createProducts } = require(`./products`);
-const checkBodyForUserNameAndPass = require(`../middleware/check-user-and-pas`)
-const addFileToReq = require(`../middleware/addFileToReq`)
-
+const { createProducts, getProducts } = require(`../controllers/products`);
+const checkBodyForUserNameAndPass = require(`../middleware/check-user-and-pas`);
+const addFileToReq = require(`../middleware/addFileToReq`);
+const authCheck = require(`../middleware/authCheck`);
+// const calc = require(`./calc/calc`)
 
 const noSuchPageHandler = (req, res) => {
 	res.end(`nooo`);
@@ -17,13 +19,14 @@ router
 	// роут для юзера
 	.post(`/login`, checkBodyForUserNameAndPass, login)
 	.post(`/register`, checkBodyForUserNameAndPass, register)
-	.get(`/logout`, logout)
-	.put(`/update-user/:id`, updateUser)
+	.get(`/logout`, authCheck, logout)
+	.put(`/user/:id`, authCheck, updateUser)
 	// роут для калькулятора
-	// .put(`/calc`, null)
+	// .post(`/calc`, calc)
 
 	// роут для обновления бд продуктов
-	.post(`/update-products`, addFileToReq, createProducts)
+	.post(`/products/file`, addFileToReq, createProducts)
+	.get(`/products`, authCheck, getProducts)
 	// .put(`/update-products`, null)
 	// .get(`/products`, null)
 	// .delete(`/delete-all-products`, null)
