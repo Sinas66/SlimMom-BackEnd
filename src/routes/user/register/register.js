@@ -1,8 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../../../model/user.model');
 
-const { secret } = require(`../../../config`);
-
 const register = (req, res) => {
 	const user = req.body;
 

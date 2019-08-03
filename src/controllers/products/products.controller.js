@@ -58,6 +58,7 @@ const createProducts = (req, res) => {
 			sendResponse(data);
 		})
 		.then(() => {
+			// eslint-disable-next-line node/prefer-promises/fs
 			fs.unlink(productsFilePath, err => {
 				if (err) {
 					console.error(err);
