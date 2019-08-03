@@ -7,7 +7,7 @@ const authCheck = (req, res, next) => {
 
 	if (token) {
 		const clearToken = token.replace(`Bearer `, ``);
-		console.log({ clearToken });
+		// console.log({ clearToken });
 
 		jwt.verify(clearToken, SECRET_KEY, function(err, decoded) {
 			if (err) {
