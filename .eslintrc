@@ -1,11 +1,15 @@
 {
 	"extends": [
+		"airbnb",
 		"eslint:recommended",
-		"airbnb-base/legacy",
 		"plugin:node/recommended",
 		"prettier",
 		"plugin:prettier/recommended"
 	],
+	"env": {
+		"es6": true,
+		"node": true
+	},
 	"plugins": ["prettier"],
 	"rules": {
 		"no-console": 1,

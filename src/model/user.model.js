@@ -3,9 +3,8 @@ const bcrypt = require('bcrypt');
 const { secret } = require(`../config`);
 const jwt = require('jsonwebtoken');
 
-const SECRET = process.env.SECRET || secret
-const TOKEN_LIFETIME = process.env.TOKEN_LIFETIME || `30d`
-
+const SECRET = process.env.SECRET || secret;
+const TOKEN_LIFETIME = process.env.TOKEN_LIFETIME || `30d`;
 
 const { Schema } = mongoose;
 
@@ -41,7 +40,7 @@ const UserSchema = new Schema(
 	},
 );
 
-UserSchema.pre('findOneAndUpdate', function () {
+UserSchema.pre('findOneAndUpdate', function() {
 	const update = this.getUpdate();
 	if (update.__v != null) {
 		delete update.__v;
@@ -59,43 +58,31 @@ UserSchema.pre('findOneAndUpdate', function () {
 	update.$inc.__v = 1;
 });
 
-
-
-UserSchema.pre('save', function () {
-	return this.createNewToken()
+UserSchema.pre('save', function() {
+	return this.createNewToken();
 });
 
-
 UserSchema.methods.comparePassword = function comparePassword(pass) {
-	return bcrypt.compare(pass, this.password)
+	return bcrypt.compare(pass, this.password);
 };
 
-
 UserSchema.methods.createNewToken = async function createNewToken() {
-
-	const userId = this._id
+	const userId = this._id;
 	const token = jwt.sign({ userId, createdDate: Date.now() }, SECRET, {
 		expiresIn: TOKEN_LIFETIME,
 		noTimestamp: true,
 	});
-	this.token = token
+	this.token = token;
 
 	try {
 		return {
 			userName: this.userName,
-			token: this.token
-		}
-	}
-	catch{
-		return `something goes wrong ;(`
+			token: this.token,
+		};
+	} catch {
+		return `something goes wrong ;(`;
 	}
 };
-
-
-
-
-
-
 
 const User = mongoose.model('User', UserSchema);
 

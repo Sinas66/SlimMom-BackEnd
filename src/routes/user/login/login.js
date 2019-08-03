@@ -3,7 +3,6 @@ const { secret } = require(`../../../config`);
 const bcrypt = require('bcrypt');
 const User = require('../../../model/user.model');
 
-
 const login = (req, res) => {
 	const user = req.body;
 
@@ -35,22 +34,23 @@ const login = (req, res) => {
 
 	const findUser = User.findOne({ userName: userNameReq });
 
-
-	findUser.
-		then(userFromDB => {
+	findUser
+		.then(userFromDB => {
 			if (!userFromDB) {
-				throw errors.userExist // Если юзер не найдет, кидаем ошибку
+				throw errors.userExist; // Если юзер не найдет, кидаем ошибку
 			}
-			userFromDB.comparePassword(userPasswordReq) // сравниваем пароли
+			userFromDB
+				.comparePassword(userPasswordReq) // сравниваем пароли
 				.then(resp => {
 					if (!resp) throw errors.passInvalid; // Если пароль не валид, кидаем ошибку
-					userFromDB.createNewToken() // Добавляем новый токен
+					userFromDB
+						.createNewToken() // Добавляем новый токен
 						.then(sendResponse)
-						.catch(sendError)
+						.catch(sendError);
 				})
-				.catch(sendError)
+				.catch(sendError);
 		})
-		.catch(sendError)
+		.catch(sendError);
 };
 
 module.exports = login;
