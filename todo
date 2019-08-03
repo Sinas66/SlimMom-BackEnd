@@ -1,14 +1,14 @@
 products in db
 [options.upsert=false] «Boolean» if true, and no documents found, insert a new document
+create or update
 
-user methods
-add token
-check password
-check token
+
+user methods +
+add token +
+check password +
+check token +
 
 calc
 
-
-create or update
 
 мало ошибок в "проблемах"! мне больше нравиться когда строгая типизация и бьют по рукам. аирбнб и все такое больше нравится!

@@ -41,15 +41,6 @@ const register = (req, res) => {
 		});
 	};
 
-	if (!user.password) {
-		sendError(`Password is required`);
-		return;
-	}
-	if (!user.userName) {
-		sendError(`userName is required`);
-		return;
-	}
-
 
 	const newUserData = {
 		...user,
@@ -60,13 +51,10 @@ const register = (req, res) => {
 
 	newUser
 		.save()
-		.then(userFromDB => {
-			const respData = {
-				userName: userFromDB.userName,
-				token: userFromDB.token,
-			};
-			return respData;
-		})
+		.then(userFromDB => ({
+			userName: userFromDB.userName,
+			token: userFromDB.token
+		}))
 		.then(sendResponse)
 		.catch(sendError);
 };

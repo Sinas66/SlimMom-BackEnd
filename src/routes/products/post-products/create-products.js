@@ -54,7 +54,6 @@ const createProducts = (req, res) => {
 		// }
 	}));
 
-	// console.log(result)
 	Products.insertMany(getFiledArray,
 		{ bypassDocumentValidation: true, ordered: false, rawResult: false })
 		.then(data => {
@@ -63,7 +62,6 @@ const createProducts = (req, res) => {
 		.catch(err => {
 			sendError(err)
 		})
-	// res.json({ getFiledArray });
 
 };
 

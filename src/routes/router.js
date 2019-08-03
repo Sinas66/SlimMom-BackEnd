@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const { login, register, logout, updateUser } = require(`./`);
 const { createProducts } = require(`./products`);
+const checkBodyForUserNameAndPass = require(`../middleware/check-user-and-pas`)
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -26,8 +27,8 @@ router
 		res.end(`Basic api response`);
 	})
 	// роут для юзера
-	.post(`/login`, login)
-	.post(`/register`, register)
+	.post(`/login`, checkBodyForUserNameAndPass, login)
+	.post(`/register`, checkBodyForUserNameAndPass, register)
 	.get(`/logout`, logout)
 	.put(`/update-user/:id`, updateUser)
 	// роут для калькулятора
