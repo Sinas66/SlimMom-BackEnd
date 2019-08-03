@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { login, register, logout, updateUser } = require(`./`);
 const { createProducts } = require(`./products`);
+const {verifyOptions} = require(`../controllers/calculator.controller`);
 const checkBodyForUserNameAndPass = require(`../middleware/check-user-and-pas`)
 const addFileToReq = require(`../middleware/addFileToReq`)
 
@@ -20,7 +21,7 @@ router
 	.get(`/logout`, logout)
 	.put(`/update-user/:id`, updateUser)
 	// роут для калькулятора
-	// .put(`/calc`, null)
+	.post(`/calc`, verifyOptions)
 
 	// роут для обновления бд продуктов
 	.post(`/update-products`, addFileToReq, createProducts)
