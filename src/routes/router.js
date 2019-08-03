@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const { login, register, logout, updateUser } = require(`./`);
-const {verifyOptions} = require(`../controllers/calculator.controller`);
+const { verifyOptions } = require(`../controllers/calculator.controller`);
 const { createProducts, getProducts } = require(`../controllers/products`);
 const checkBodyForUserNameAndPass = require(`../middleware/check-user-and-pas`);
 const addFileToReq = require(`../middleware/addFileToReq`);
