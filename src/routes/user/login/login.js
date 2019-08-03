@@ -1,6 +1,3 @@
-const jwt = require('jsonwebtoken');
-const { secret } = require(`../../../config`);
-const bcrypt = require('bcrypt');
 const User = require('../../../model/user.model');
 
 const login = (req, res) => {

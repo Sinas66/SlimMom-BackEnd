@@ -1,13 +1,14 @@
 const jwt = require('jsonwebtoken');
 
-const SECRET_KEY = process.env.SECRET;
+const { secret } = require(`../config`);
+const SECRET_KEY = process.env.SECRET_KEY_FOR_JWB || secret;
 
 const authCheck = (req, res, next) => {
 	const token = req.headers.authorization;
 
 	if (token) {
 		const clearToken = token.replace(`Bearer `, ``);
-		console.log({ clearToken });
+		// console.log({ clearToken });
 
 		jwt.verify(clearToken, SECRET_KEY, function(err, decoded) {
 			if (err) {
@@ -20,14 +21,6 @@ const authCheck = (req, res, next) => {
 			req.user = { id: decoded.userId };
 			next();
 		});
-
-		// invalid token - synchronous
-		// try {
-		//   var decoded = jwt.verify(clearToken, SECRET_KEY);
-		// } catch (err) {
-		//   console.log({ err });
-		//   // err
-		// }
 	} else {
 		res.status(401).json({
 			err: `error`,

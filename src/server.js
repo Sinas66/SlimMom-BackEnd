@@ -1,6 +1,7 @@
 const express = require(`express`);
 const app = express();
 const helmet = require('helmet');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const morgan = require('morgan');
 const cors = require('cors');
 const path = require('path');

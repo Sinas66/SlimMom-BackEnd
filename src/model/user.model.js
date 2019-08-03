@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const { secret } = require(`../config`);
+
+const { secret, tokenLifeTime } = require(`../config`);
 const jwt = require('jsonwebtoken');
 
-const SECRET = process.env.SECRET || secret;
-const TOKEN_LIFETIME = process.env.TOKEN_LIFETIME || `30d`;
+const SECRET_KEY = process.env.SECRET_KEY_FOR_JWB || secret;
 
 const { Schema } = mongoose;
 
@@ -68,8 +68,8 @@ UserSchema.methods.comparePassword = function comparePassword(pass) {
 
 UserSchema.methods.createNewToken = async function createNewToken() {
 	const userId = this._id;
-	const token = jwt.sign({ userId, createdDate: Date.now() }, SECRET, {
-		expiresIn: TOKEN_LIFETIME,
+	const token = jwt.sign({ userId, createdDate: Date.now() }, SECRET_KEY, {
+		expiresIn: tokenLifeTime,
 		noTimestamp: true,
 	});
 	this.token = token;
