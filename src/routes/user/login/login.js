@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const { secret } = require(`../../../config`);
 const bcrypt = require('bcrypt');
-const User = require('../../../model/user');
+const User = require('../../../model/user.model');
 
 const errors = {
 	userExist: 'User doesnt exist',
@@ -45,50 +45,62 @@ const login = (req, res) => {
 	const userNameReq = user.userName.trim().toLowerCase(); // Тримим и ловеркейсим userName
 	const userPasswordReq = user.password.trim(); // Тримим и ловеркейсим userName
 
-	const createToken = userId => {
-		const token = jwt.sign({ userId, createdDate: Date.now() }, secret, {
-			expiresIn: `30d`,
-			noTimestamp: true,
-		});
-		return token;
-	};
+	const findUser = User.findOne({ userName: userNameReq });
 
-	const findUser = User.find({ userName: userNameReq });
 
-	findUser
-		.then(usersFromDB => {
-			if (usersFromDB.length === 0) {
-				throw errors.exist; // Если юзер не найдет кидаем ошибку
+
+	findUser.
+		then(userFromDB => {
+			if (!userFromDB) {
+				throw errors.userExist
 			}
-			bcrypt
-				.compare(userPasswordReq, usersFromDB[0].password) // сравниваем пароли
+			userFromDB.comparePassword(userPasswordReq)
 				.then(resp => {
 					if (!resp) throw errors.passInvalid;
-					return usersFromDB[0];
-				})
-				.then(userFromDB => {
-					const newToken = createToken(userFromDB.id);
-					User.findByIdAndUpdate(
-						userFromDB.id,
-						{ $set: { token: newToken } },
-						{ new: true },
-						err => {
-							if (err) throw err;
-						},
-					)
-						.then(userWithNewToken => {
-							const respData = {
-								userName: userWithNewToken.userName,
-								token: userWithNewToken.token,
-							};
-							return respData;
-						})
+					userFromDB.createNewToken()
 						.then(sendResponse)
-						.catch(sendError);
+						.catch(sendError)
 				})
-				.catch(sendError);
+				.catch(sendError)
+
 		})
-		.catch(sendError);
+		.catch(sendError)
+
+
+	// findUser
+	// 	.then(usersFromDB => {
+	// 		if (usersFromDB.length === 0) {
+	// 			throw errors.exist; // Если юзер не найдет кидаем ошибку
+	// 		}
+	// 		bcrypt
+	// 			.compare(userPasswordReq, usersFromDB[0].password) // сравниваем пароли
+	// 			.then(resp => {
+	// 				if (!resp) throw errors.passInvalid;
+	// 				return usersFromDB[0];
+	// 			})
+	// 			.then(userFromDB => {
+	// 				const newToken = createToken(userFromDB.id);
+	// 				User.findByIdAndUpdate(
+	// 					userFromDB.id,
+	// 					{ $set: { token: newToken } },
+	// 					{ new: true },
+	// 					err => {
+	// 						if (err) throw err;
+	// 					},
+	// 				)
+	// 					.then(userWithNewToken => {
+	// 						const respData = {
+	// 							userName: userWithNewToken.userName,
+	// 							token: userWithNewToken.token,
+	// 						};
+	// 						return respData;
+	// 					})
+	// 					.then(sendResponse)
+	// 					.catch(sendError);
+	// 			})
+	// 			.catch(sendError);
+	// 	})
+	// 	.catch(sendError);
 };
 
 module.exports = login;

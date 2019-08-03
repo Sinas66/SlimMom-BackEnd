@@ -6,14 +6,16 @@ const { createProducts } = require(`./products`);
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-		cb(null, './uploads/')
-},
+		cb(null, './uploads/');
+	},
 	filename(req, file, cb) {
 		cb(null, file.originalname);
 	},
 });
 
 const upload = multer({ storage });
+
+
 
 const noSuchPageHandler = (req, res) => {
 	res.end(`nooo`);

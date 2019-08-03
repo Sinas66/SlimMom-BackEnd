@@ -4,7 +4,6 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const cors = require('cors');
 const path = require('path');
-
 const errorHandler = require(`./utils/errorHandler`);
 const favicon = require('serve-favicon');
 const router = require('./routes/router');
@@ -13,6 +12,7 @@ const addTokenToReq = require(`./middleware/addTokentoReq`);
 
 const staticPublicPath = path.join(__dirname, '../public');
 const faviconPath = path.join(__dirname, `../public/favicon.ico`);
+
 
 const startServer = port => {
 	app
@@ -31,6 +31,7 @@ const startServer = port => {
 	app.listen(port); // Порт на котором работает сервер
 
 	console.log(`Server was started at http://localhost:${port}`);
+
 };
 
 module.exports = startServer;

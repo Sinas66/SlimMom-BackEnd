@@ -6,28 +6,29 @@ const ProductsSchema = new Schema(
 	{
 		title: {
 			ua: {
-				type: String
+				type: String,
 			},
 			ru: {
-				type: String
-			}
+				type: String,
+			},
 		},
 		calories: {
-			type: Number
+			type: Number,
 		},
 		categories: {
-			type: Array
+			type: Array,
 		},
 		weight: {
 			type: Number,
-			default: 100
+			default: 100,
 		},
 		groupBloodNotAllowed: {
+			type: Object,
 			1: true,
 			2: false,
 			3: false,
-			4: true
-		}
+			4: true,
+		},
 		// groupBloodNotAllowed: [
 		// 	{
 		// 		groupBlood: 1,
@@ -43,7 +44,6 @@ const ProductsSchema = new Schema(
 		timestamps: true,
 	},
 );
-
 
 const Products = mongoose.model('Products', ProductsSchema);
 

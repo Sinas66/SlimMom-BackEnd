@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const User = require('../../../model/user');
+const User = require('../../../model/user.model');
 
 const { secret } = require(`../../../config`);
 
@@ -51,20 +50,13 @@ const register = (req, res) => {
 		return;
 	}
 
-	const hashedPassword = bcrypt.hashSync(user.password.trim(), 10);
 
 	const newUserData = {
 		...user,
-		password: hashedPassword,
+		password: bcrypt.hashSync(user.password.trim(), 10),
 	};
 
 	const newUser = new User(newUserData);
-
-	// eslint-disable-next-line no-underscore-dangle
-	const userId = newUser._id;
-	newUser.token = jwt.sign({ userId, createdDate: Date.now() }, secret, {
-		expiresIn: `30d`,
-	});
 
 	newUser
 		.save()
