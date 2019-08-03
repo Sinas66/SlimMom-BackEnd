@@ -1,13 +1,12 @@
 const path = require('path');
-const mongoose = require('mongoose');
-
+const fs = require(`fs`)
 
 const Products = require(`../../../model/products.model`)
-const productsFile = path.join(__dirname, '../../../../uploads/bd_products.xlsx');
 
 const createProducts = (req, res) => {
-	// multer - читає файл і записує його у папку uploads
-	// в req.file - беремо назву файлу
+
+
+	const productsFilePath = path.join(__dirname, '../../../../uploads', req.file.filename); // Путь к сохраненному файлу
 
 
 	const sendResponse = data => {
@@ -26,7 +25,7 @@ const createProducts = (req, res) => {
 	const excelToJson = require('convert-excel-to-json');
 
 	const result = excelToJson({
-		sourceFile: productsFile,
+		sourceFile: productsFilePath,
 		header: {
 			rows: 2
 		},
@@ -58,6 +57,14 @@ const createProducts = (req, res) => {
 		{ bypassDocumentValidation: true, ordered: false, rawResult: false })
 		.then(data => {
 			sendResponse(data)
+		}).then(() => {
+			fs.unlink(productsFilePath, err => {
+				if (err) {
+					console.error(err);
+					// throw err
+				}
+				console.log(`${productsFilePath} was deleted`);
+			})
 		})
 		.catch(err => {
 			sendError(err)
