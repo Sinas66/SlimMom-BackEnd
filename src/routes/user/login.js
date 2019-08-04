@@ -1,12 +1,9 @@
-const User = require('../../../model/user.model');
+const User = require('../../model/user.model');
+
+const errors = require(`../../config`);
 
 const login = (req, res) => {
 	const user = req.body;
-
-	const errors = {
-		userExist: 'User doesnt exist',
-		passInvalid: `Password is ivalid`,
-	};
 
 	const sendResponse = data => {
 		res.json({

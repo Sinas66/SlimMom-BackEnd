@@ -1,8 +1,7 @@
 const express = require('express');
-
 const router = express.Router();
-const { login, register, logout, updateUser } = require(`./`);
 const { verifyOptions } = require(`../controllers/calculator.controller`);
+const { login, register, logout, updateUser, getUser } = require(`./user`);
 const { createProducts, getProducts } = require(`../controllers/products`);
 const checkBodyForUserNameAndPass = require(`../middleware/check-user-and-pas`);
 const addFileToReq = require(`../middleware/addFileToReq`);
@@ -10,7 +9,9 @@ const authCheck = require(`../middleware/authCheck`);
 // const calc = require(`./calc/calc`)
 
 const noSuchPageHandler = (req, res) => {
-	res.end(`nooo`);
+	res.send(`nooo`);
+	// or
+	// res.status(404).end();
 };
 
 router
@@ -21,7 +22,8 @@ router
 	.post(`/login`, checkBodyForUserNameAndPass, login)
 	.post(`/register`, checkBodyForUserNameAndPass, register)
 	.get(`/logout`, authCheck, logout)
-	.put(`/user/:id`, authCheck, updateUser)
+	.put(`/user`, authCheck, updateUser)
+	.get(`/user`, authCheck, getUser)
 	// роут для калькулятора
 	.post(`/calc`, verifyOptions)
 
