@@ -1,4 +1,5 @@
 const path = require('path');
+const excelToJson = require('convert-excel-to-json');
 
 const fs = require(`fs`);
 
@@ -20,11 +21,9 @@ const createProducts = (req, res) => {
 
 	const sendError = err => {
 		res.status(400).json({
-			err: err,
+			err,
 		});
 	};
-
-	const excelToJson = require('convert-excel-to-json');
 
 	const result = excelToJson({
 		sourceFile: productsFilePath,

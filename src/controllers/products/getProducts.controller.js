@@ -12,7 +12,7 @@ const getProducts = (req, res) => {
 		const status = code || 404;
 		res.status(status).json({
 			message: err.message,
-			err: err,
+			err,
 		});
 	};
 

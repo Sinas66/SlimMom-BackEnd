@@ -2,7 +2,7 @@ const Products = require('../../model/products.model');
 const UserEated = require('../../model/userEated.model');
 const User = require('../../model/user.model');
 
-module.exports.createUserEated = async (req, res) => {
+const createUserEated = async (req, res) => {
 	const userId = req.user.id;
 	const userProductSelected = req.params.productId;
 	const userProductWeight = req.body.weight;
@@ -19,7 +19,7 @@ module.exports.createUserEated = async (req, res) => {
 			weight: userProductWeight,
 			groupBloodNotAllowed: findProduct.groupBloodNotAllowed,
 			createdDate: userDateSelected,
-			userId: userId,
+			userId,
 		};
 
 		const newRecord = await UserEated.insertOne(
@@ -43,8 +43,10 @@ module.exports.createUserEated = async (req, res) => {
 		}
 	} catch (error) {
 		res.status(400).json({
-			error: error,
+			error,
 			message: error.message,
 		});
 	}
 };
+
+module.exports = createUserEated;

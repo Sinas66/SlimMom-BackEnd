@@ -20,7 +20,7 @@ const createProducts = (req, res) => {
 
 	const sendError = err => {
 		res.status(400).json({
-			err: err,
+			err,
 		});
 	};
 
