@@ -15,7 +15,8 @@ const config = {
 		onlyJson: `request content-type must be application/json only`,
 		calc: {
 			allFieldsAreRequired: 'All fields are required!',
-			allFieldsMustBeNumber: 'All fields must be a ceil Number!',
+			ageHeightCeilNum: 'Age and height must be a ceil Number!',
+			weightNum: 'Weight must be a Number!',
 			ageIsRequired: 'Age is required!',
 			ageRange: 'Age must be in range 1-99',
 			heightIsRequired: 'Height is required!',

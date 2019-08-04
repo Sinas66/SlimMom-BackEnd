@@ -13,8 +13,8 @@ const checkCalcReq = (req, res, next) => {
 			example: {
 				age: 29,
 				height: 170,
-				currentWeight: 80,
-				desiredWeight: 50,
+				currentWeight: 80.3,
+				desiredWeight: 50.5,
 			},
 		});
 	};
@@ -42,17 +42,12 @@ const checkCalcReq = (req, res, next) => {
 		sendError(errors.desiredWeight);
 		return;
 	}
-	if (
-		Number.isNaN(age) ||
-		Number.isNaN(height) ||
-		Number.isNaN(currentWeight) ||
-		Number.isNaN(desiredWeight) ||
-		!Number.isInteger(age) ||
-		!Number.isInteger(height) ||
-		!Number.isInteger(currentWeight) ||
-		!Number.isInteger(desiredWeight)
-	) {
-		sendError(errors.allFieldsMustBeNumber);
+	if (typeof desiredWeight !== 'number' || typeof currentWeight !== 'number') {
+		sendError(errors.weightNum);
+		return;
+	}
+	if (!Number.isInteger(age) || !Number.isInteger(height)) {
+		sendError(errors.ageHeightCeilNum);
 		return;
 	}
 	if (age < 1 || age > 99) {
