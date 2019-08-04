@@ -16,6 +16,7 @@ const {
 } = require('../controllers/user');
 
 const calculator = require(`../controllers/calculator.controller`);
+const { createQuotes, getQuotes } = require(`../controllers/quotes`);
 
 const { createProducts, getProducts } = require('../controllers/products');
 const userEated = require('../controllers/userEated');
@@ -51,6 +52,11 @@ router
 	.post('/user/eat/:productId', authCheck, userEated.createUserEated)
 	//! Видалити що юзер з'їв - видалити документ по ід
 	.delete('user/eat/:productId', authCheck, userEated.deleteUserEated)
+
+	// Роут для цитат
+	.post('/quotes', addFileToReq, createQuotes)
+	.get('/quotes', authCheck, getQuotes)
+
 	// если нет пути шлем ошибку
 	.get('*', noSuchPageHandler);
 
