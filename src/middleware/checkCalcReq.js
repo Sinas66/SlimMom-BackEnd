@@ -46,7 +46,11 @@ const checkCalcReq = (req, res, next) => {
 		Number.isNaN(age) ||
 		Number.isNaN(height) ||
 		Number.isNaN(currentWeight) ||
-		Number.isNaN(desiredWeight)
+		Number.isNaN(desiredWeight) ||
+		!Number.isInteger(age) ||
+		!Number.isInteger(height) ||
+		!Number.isInteger(currentWeight) ||
+		!Number.isInteger(desiredWeight)
 	) {
 		sendError(errors.allFieldsMustBeNumber);
 		return;
