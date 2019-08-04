@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const { Schema } = mongoose;
 
 const UserEatedSchema = new Schema({
@@ -20,17 +19,17 @@ const UserEatedSchema = new Schema({
 	},
 	calories: {
 		type: Number,
-		default: (this.basicCalories * this.weight) / 100,
+		default: 100,
 	},
 	weight: {
 		type: Number,
 	},
 	groupBloodNotAllowed: {
 		type: Object,
-		1: true,
-		2: false,
-		3: false,
-		4: true,
+		1: Boolean,
+		2: Boolean,
+		3: Boolean,
+		4: Boolean,
 	},
 	createdDate: {
 		type: Date,

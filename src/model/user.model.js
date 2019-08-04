@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const { Schema } = mongoose;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -21,7 +20,7 @@ const UserSchema = new Schema(
 			maxlength: 16,
 			validate: {
 				validator(v) {
-					return /^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{0,19}$/g.test(v);
+					return /^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{0,16}$/g.test(v);
 				},
 			},
 		},
@@ -33,7 +32,13 @@ const UserSchema = new Schema(
 		},
 		userData: {
 			type: Object,
-			email: { type: String, lowercase: true, trim: true },
+			email: {
+				type: String,
+				lowercase: true,
+				trim: true,
+				index: true,
+				unique: true,
+			},
 			age: {
 				type: Number,
 				min: 1,
