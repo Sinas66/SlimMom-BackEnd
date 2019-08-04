@@ -13,7 +13,6 @@ const addTokenToReq = require(`./middleware/addTokentoReq`);
 const staticPublicPath = path.join(__dirname, '../public');
 const faviconPath = path.join(__dirname, `../public/favicon.ico`);
 
-
 const startServer = port => {
 	app
 		.use(cors())
@@ -31,7 +30,6 @@ const startServer = port => {
 	app.listen(port); // Порт на котором работает сервер
 
 	console.log(`Server was started at http://localhost:${port}`);
-
 };
 
 module.exports = startServer;

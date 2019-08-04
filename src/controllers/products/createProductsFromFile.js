@@ -1,8 +1,8 @@
 const path = require('path');
-const fs = require(`fs`);
+// const fs = require(`fs`);
 const excelToJson = require('convert-excel-to-json');
 
-const Products = require(`../../../model/products.model`);
+const Products = require(`../../model/products.model`);
 
 const createProducts = (req, res) => {
 	const productsFilePath = path.join(

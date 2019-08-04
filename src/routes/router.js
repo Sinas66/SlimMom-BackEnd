@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { login, register, logout, updateUser } = require(`./`);
-const { createProducts } = require(`./products`);
-const checkBodyForUserNameAndPass = require(`../middleware/check-user-and-pas`)
-const addFileToReq = require(`../middleware/addFileToReq`)
-
+const { createProductsFromFile } = require(`../controllers/products`);
+const checkBodyForUserNameAndPass = require(`../middleware/check-user-and-pas`);
+const addFileToReq = require(`../middleware/addFileToReq`);
 
 const noSuchPageHandler = (req, res) => {
 	res.end(`nooo`);
@@ -23,7 +22,7 @@ router
 	// .put(`/calc`, null)
 
 	// роут для обновления бд продуктов
-	.post(`/update-products`, addFileToReq, createProducts)
+	.post(`/update-products`, addFileToReq, createProductsFromFile)
 	// .put(`/update-products`, null)
 	// .get(`/products`, null)
 	// .delete(`/delete-all-products`, null)
