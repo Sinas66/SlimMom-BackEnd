@@ -54,9 +54,9 @@ router
 	// Роут для сьеденого
 
 	// ? Записати що юзер з'їв і вернути новий документ
-	.post('/user/eat/:productId', authCheck, userEated.createUserEated)
+	.post('/user/eats/:productId', authCheck, userEated.createUserEated)
 	//! Видалити що юзер з'їв - видалити документ по ід
-	.delete('user/eat/:productId', authCheck, userEated.deleteUserEated)
+	.delete('user/eats/:productId', authCheck, userEated.deleteUserEated)
 
 	// Роут для цитат
 	.post('/quotes', addFileToReq, createQuotes)
