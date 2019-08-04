@@ -1,7 +1,7 @@
 const User = require('../../model/user.model');
 
 const updateUser = (req, res) => {
-	const userId = req.userId;
+	const userId = req.user.id;
 	const newUserData = req.body;
 
 	const sendResponse = userData => {
@@ -14,7 +14,7 @@ const updateUser = (req, res) => {
 	const sendError = err => {
 		res.status(400).json({
 			err,
-			meassage: err.message,
+			message: err.message,
 		});
 	};
 
@@ -25,7 +25,7 @@ const updateUser = (req, res) => {
 	)
 		.then(data => {
 			const respData = {
-				...data.userData,
+				...data,
 			};
 			sendResponse(respData);
 		})

@@ -8,7 +8,7 @@ const SECRET_KEY = process.env.SECRET_KEY_FOR_JWB || secret;
 
 const UserSchema = new Schema(
 	{
-		userName: {
+		nickname: {
 			type: String,
 			index: true,
 			unique: true,
@@ -16,7 +16,7 @@ const UserSchema = new Schema(
 			lowercase: true,
 			trim: true,
 			minlength: 5,
-			maxlengrh: 16,
+			maxlength: 16,
 			validate: {
 				validator: function(v) {
 					return /^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{0,19}$/g.test(v);
@@ -27,7 +27,7 @@ const UserSchema = new Schema(
 			type: String,
 			required: true,
 			minlength: 5,
-			maxlengrh: 16,
+			maxlength: 16,
 		},
 		userData: {
 			type: Object,
@@ -36,13 +36,13 @@ const UserSchema = new Schema(
 				type: Number,
 				min: 1,
 				max: 99,
-				maxlengrh: 2,
+				maxlength: 2,
 			},
 			weight: {
 				type: Number,
 				min: 1,
 				max: 199,
-				maxlengrh: 3,
+				maxlength: 3,
 			},
 			height: {
 				type: Number,
@@ -53,7 +53,7 @@ const UserSchema = new Schema(
 				type: Number,
 				min: 1,
 				max: 199,
-				maxlengrh: 3,
+				maxlength: 3,
 			},
 			groupBlood: {
 				type: Number,

@@ -1,7 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const { verifyOptions } = require(`../controllers/calculator.controller`);
-const { login, register, logout, updateUser, getUser } = require(`./user`);
+const {
+	login,
+	register,
+	logout,
+	updateUser,
+	getUser,
+} = require(`../controllers/user`);
 const { createProducts, getProducts } = require(`../controllers/products`);
 const checkBodyForUserNameAndPass = require(`../middleware/check-user-and-pas`);
 const addFileToReq = require(`../middleware/addFileToReq`);
