@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 const { secret, tokenLifeTime } = require(`../config`);
 
-const SECRET_KEY = process.env.SECRET_KEY_FOR_JWB || secret;
+const SECRET_KEY = process.env.SECRET_KEY_FOR_JWT || secret;
 
 const UserSchema = new Schema(
 	{
@@ -18,8 +19,8 @@ const UserSchema = new Schema(
 			minlength: 5,
 			maxlength: 16,
 			validate: {
-				validator: function(v) {
-					return /^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{0,19}$/g.test(v);
+				validator(v) {
+					return /^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{0,16}$/g.test(v);
 				},
 			},
 		},
@@ -31,7 +32,13 @@ const UserSchema = new Schema(
 		},
 		userData: {
 			type: Object,
-			email: { type: String, lowercase: true, trim: true },
+			email: {
+				type: String,
+				lowercase: true,
+				trim: true,
+				index: true,
+				unique: true,
+			},
 			age: {
 				type: Number,
 				min: 1,
@@ -73,12 +80,13 @@ const UserSchema = new Schema(
 	},
 );
 
-UserSchema.pre('findOneAndUpdate', function() {
+UserSchema.pre('findOneAndUpdate', function updateVersion() {
 	const update = this.getUpdate();
 	if (update.__v != null) {
 		delete update.__v;
 	}
 	const keys = ['$set', '$setOnInsert'];
+	// eslint-disable-next-line no-restricted-syntax
 	for (const key of keys) {
 		if (update[key] != null && update[key].__v != null) {
 			delete update[key].__v;

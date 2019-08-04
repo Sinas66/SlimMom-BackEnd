@@ -1,6 +1,6 @@
-const Products = require(`../../model/products.model`);
+const Quotes = require(`../../model/quotes.model`);
 
-const getProducts = (req, res) => {
+const getQuotes = (req, res) => {
 	const sendResponse = products => {
 		res.json({
 			status: 'success',
@@ -16,9 +16,9 @@ const getProducts = (req, res) => {
 		});
 	};
 
-	Products.find()
+	Quotes.find()
 		.then(sendResponse)
 		.catch(sendError);
 };
 
-module.exports = getProducts;
+module.exports = getQuotes;

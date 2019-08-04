@@ -1,9 +1,9 @@
 const UserEated = require('../../model/userEated.model');
 const User = require('../../model/user.model');
 
-module.exports.createUserEated = async (req, res) => {
+const createUserEated = async (req, res) => {
 	const userId = req.user.id;
-	const productId = req.params.productId;
+	const { productId } = req.params;
 
 	try {
 		const deletedProduct = UserEated.findByIdAndRemove(productId);
@@ -21,14 +21,16 @@ module.exports.createUserEated = async (req, res) => {
 
 			if (addNewEatedProductToUser) {
 				res.status(201).json({
-					deletedProduct: deletedProduct,
+					deletedProduct,
 				});
 			}
 		}
 	} catch (error) {
 		res.status(400).json({
-			error: error,
+			error,
 			message: error.message,
 		});
 	}
 };
+
+module.exports = createUserEated;
