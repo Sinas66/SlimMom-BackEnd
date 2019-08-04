@@ -29,16 +29,6 @@ const ProductsSchema = new Schema(
 			3: false,
 			4: true,
 		},
-		// groupBloodNotAllowed: [
-		// 	{
-		// 		groupBlood: 1,
-		// 		allowed: false
-		// 	},
-		// 	{
-		// 		groupBlood: 2,
-		// 		allowed: false
-		// 	},
-		// ]
 	},
 	{
 		timestamps: true,

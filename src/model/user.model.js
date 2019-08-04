@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const { secret } = require(`../config`);
+
+const { secret, tokenLifeTime } = require(`../config`);
 const jwt = require('jsonwebtoken');
 
-const SECRET = process.env.SECRET || secret;
-const TOKEN_LIFETIME = process.env.TOKEN_LIFETIME || `30d`;
+const SECRET_KEY = process.env.SECRET_KEY_FOR_JWB || secret;
 
 const { Schema } = mongoose;
 
@@ -17,20 +17,51 @@ const UserSchema = new Schema(
 			required: true,
 			lowercase: true,
 			trim: true,
+			minlength: 5,
+			maxlengrh: 16,
+			validate: {
+				validator: function(v) {
+					return /^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{0,19}$/g.test(v);
+				},
+			},
 		},
-		password: { type: String, required: true },
+		password: {
+			type: String,
+			required: true,
+			minlength: 5,
+			maxlengrh: 16,
+		},
 		userData: {
 			type: Object,
 			email: { type: String, lowercase: true, trim: true },
-			age: {},
+			age: {
+				type: Number,
+				min: 1,
+				max: 99,
+				maxlengrh: 2,
+			},
 			weight: {
 				type: Number,
 				min: 1,
 				max: 199,
+				maxlengrh: 3,
 			},
-			height: {},
-			currentWeight: {},
-			groupBlood: {},
+			height: {
+				type: Number,
+				min: 1,
+				max: 230,
+			},
+			currentWeight: {
+				type: Number,
+				min: 1,
+				max: 199,
+				maxlengrh: 3,
+			},
+			groupBlood: {
+				type: Number,
+				min: 1,
+				max: 4,
+			},
 		},
 		token: { type: String },
 		eatsRecorded: { type: Array },
@@ -68,8 +99,8 @@ UserSchema.methods.comparePassword = function comparePassword(pass) {
 
 UserSchema.methods.createNewToken = async function createNewToken() {
 	const userId = this._id;
-	const token = jwt.sign({ userId, createdDate: Date.now() }, SECRET, {
-		expiresIn: TOKEN_LIFETIME,
+	const token = jwt.sign({ userId, createdDate: Date.now() }, SECRET_KEY, {
+		expiresIn: tokenLifeTime,
 		noTimestamp: true,
 	});
 	this.token = token;
