@@ -124,8 +124,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"$ref": "#/components/schemas/"
+									"type": "object"
 								}
 							}
 						}
@@ -160,8 +159,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"$ref": "#/components/schemas/"
+									"type": "object"
 								}
 							}
 						}
@@ -175,7 +173,7 @@
 		"/user": {
 			"put": {
 				"tags": ["Protected"],
-				"summary": "Save new user data (weight, height, groupBlood, ...)",
+				"summary": "Save new user data 'CALC' (weight, height, groupBlood, ...)",
 				"security": ["bearerAuth"],
 				"parameters": [
 					{
@@ -196,8 +194,110 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object",
-									"$ref": "#/components/schemas/"
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					}
+				}
+			}
+    },
+    "/user/eats/{date}": {
+			"get": {
+				"tags": ["Protected"],
+				"summary": "Return list eated products by date in milliseconds",
+				"security": ["bearerAuth"],
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "JWT",
+						"required": true,
+						"style": "simple",
+						"schema": {
+							"$ref": "#/components/securitySchemes/bearerAuth"
+						},
+						"style": "simple"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					}
+				}
+			}
+    },
+    "/user/eats/{productId}": {
+			"post": {
+				"tags": ["Protected"],
+				"summary": "Create new record what user eat",
+				"security": ["bearerAuth"],
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "JWT",
+						"required": true,
+						"style": "simple",
+						"schema": {
+							"$ref": "#/components/securitySchemes/bearerAuth"
+						},
+						"style": "simple"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					}
+				}
+      },
+      "delete": {
+				"tags": ["Protected"],
+				"summary": "Delete record user eat",
+				"security": ["bearerAuth"],
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "JWT",
+						"required": true,
+						"style": "simple",
+						"schema": {
+							"$ref": "#/components/securitySchemes/bearerAuth"
+						},
+						"style": "simple"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
 								}
 							}
 						}
