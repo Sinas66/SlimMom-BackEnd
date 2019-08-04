@@ -1,6 +1,6 @@
-const User = require('../../../model/user.model');
+const User = require('../../model/user.model');
 
-const errors = require(`../../../config`);
+const errors = require(`../../config`);
 
 const login = (req, res) => {
 	const user = req.body;
