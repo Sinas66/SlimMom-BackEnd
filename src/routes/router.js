@@ -1,5 +1,4 @@
 const express = require('express');
-
 const {
 	checkBodyForUserNameAndPass,
 	addFileToReq,
@@ -14,10 +13,8 @@ const {
 	updateUser,
 	getUser,
 } = require('../controllers/user');
-
 const calculator = require(`../controllers/calculator.controller`);
 const { createQuotes, getQuotes } = require(`../controllers/quotes`);
-
 const { createProducts, getProducts } = require('../controllers/products');
 const userEated = require('../controllers/userEated');
 
