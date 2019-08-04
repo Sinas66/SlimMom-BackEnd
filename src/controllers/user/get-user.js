@@ -1,7 +1,7 @@
 const User = require(`../../model/user.model`);
 
 const getUser = (req, res) => {
-	const userId = req.userId;
+	const userId = req.user.id;
 
 	const sendResponse = data => {
 		res.json({
@@ -20,11 +20,11 @@ const getUser = (req, res) => {
 	};
 
 	User.findById(userId)
-		.then(userFromDB => {
+		.then(user => {
 			const respData = {
-				userName: userFromDB.userName,
-				token: userFromDB.token,
-				userData: userFromDB.userData,
+				nickname: user.nickname,
+				token: user.token,
+				userData: user.userData,
 			};
 			sendResponse(respData);
 		})

@@ -57,12 +57,16 @@ const UserSchema = new Schema(
 			},
 			groupBlood: {
 				type: Number,
-				min: 1,
-				max: 4,
+				enum: [1, 2, 3, 4],
 			},
 		},
 		token: { type: String },
-		eatsRecorded: { type: Array },
+		eatsRecorded: [
+			{
+				type: Schema.Types.ObjectId,
+				ref: 'UserEated',
+			},
+		],
 	},
 	{
 		timestamps: true,
