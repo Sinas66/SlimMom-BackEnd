@@ -1,12 +1,10 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 const bcrypt = require('bcrypt');
-
-const { secret, tokenLifeTime } = require(`../config`);
 const jwt = require('jsonwebtoken');
+const { secret, tokenLifeTime } = require(`../config`);
 
 const SECRET_KEY = process.env.SECRET_KEY_FOR_JWB || secret;
-
-const { Schema } = mongoose;
 
 const UserSchema = new Schema(
 	{
