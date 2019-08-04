@@ -20,7 +20,7 @@ const UserEatedSchema = new Schema({
 	},
 	calories: {
 		type: Number,
-		default: (this.basicCalories * this.weight) / 100,
+		default: 100,
 	},
 	weight: {
 		type: Number,
