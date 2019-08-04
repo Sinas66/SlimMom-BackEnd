@@ -18,7 +18,7 @@ const authCheck = (req, res, next) => {
 				});
 				return;
 			}
-			req.user = { id: decoded.userId };
+			req.userId = decoded.userId;
 			next();
 		});
 	} else {

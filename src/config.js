@@ -8,6 +8,8 @@ const config = {
 	secret: `secret key`,
 	errors: {
 		userRequired: `userName is reqaaauired`,
+		userExist: 'User doesnt exist',
+		passInvalid: `Password is ivalid`,
 		passRequired: `password is required`,
 		passAndUserRequired: `username and password is required`,
 		onlyJson: `request content-type must be application/json only`,

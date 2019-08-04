@@ -20,7 +20,7 @@ router
 	.post(`/login`, checkBodyForUserNameAndPass, login)
 	.post(`/register`, checkBodyForUserNameAndPass, register)
 	.get(`/logout`, authCheck, logout)
-	.put(`/user/:id`, authCheck, updateUser)
+	.put(`/user`, authCheck, updateUser)
 	// роут для калькулятора
 	// .post(`/calc`, calc)
 

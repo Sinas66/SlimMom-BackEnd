@@ -1,34 +1,33 @@
 const User = require('../../../model/user.model');
 
 const updateUser = (req, res) => {
-	const userUpdateData = req.body;
-	const { id } = req.params;
+	const userId = req.userId;
+	const newUserData = req.body;
 
-	console.log(`userUpdateData`, userUpdateData);
-	console.log(`id`, id);
-
-	const sendResponse = newUser => {
+	const sendResponse = userData => {
 		res.json({
 			status: `success`,
-			newUser,
+			userData,
 		});
 	};
 
-	const sendError = () => {
+	const sendError = err => {
 		res.status(400).json({
-			err: 'there is no such user',
+			err,
+			meassage: err.message,
 		});
 	};
 
-	User.findById(id)
-		.then(user => {
-			// console.log("user", user)
-			// eslint-disable-next-line no-underscore-dangle
-			const updatedUser = { ...user._doc, ...userUpdateData };
-			console.log('updatedUser', updatedUser);
-			User.findByIdAndUpdate({ _id: id }, updatedUser)
-				.then(sendResponse)
-				.catch(err => console.log(err));
+	User.findByIdAndUpdate(
+		userId,
+		{ $set: { userData: newUserData } },
+		{ new: true },
+	)
+		.then(data => {
+			const respData = {
+				...data.userData,
+			};
+			sendResponse(respData);
 		})
 		.catch(sendError);
 };

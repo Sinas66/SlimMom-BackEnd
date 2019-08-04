@@ -17,20 +17,51 @@ const UserSchema = new Schema(
 			required: true,
 			lowercase: true,
 			trim: true,
+			minlength: 5,
+			maxlengrh: 16,
+			validate: {
+				validator: function(v) {
+					return /^(?=.*[A-Za-z0-9]$)[A-Za-z][A-Za-z\d.-]{0,19}$/g.test(v);
+				},
+			},
 		},
-		password: { type: String, required: true },
+		password: {
+			type: String,
+			required: true,
+			minlength: 5,
+			maxlengrh: 16,
+		},
 		userData: {
 			type: Object,
 			email: { type: String, lowercase: true, trim: true },
-			age: {},
+			age: {
+				type: Number,
+				min: 1,
+				max: 99,
+				maxlengrh: 2,
+			},
 			weight: {
 				type: Number,
 				min: 1,
 				max: 199,
+				maxlengrh: 3,
 			},
-			height: {},
-			currentWeight: {},
-			groupBlood: {},
+			height: {
+				type: Number,
+				min: 1,
+				max: 230,
+			},
+			currentWeight: {
+				type: Number,
+				min: 1,
+				max: 199,
+				maxlengrh: 3,
+			},
+			groupBlood: {
+				type: Number,
+				min: 1,
+				max: 4,
+			},
 		},
 		token: { type: String },
 		eatsRecorded: { type: Array },
