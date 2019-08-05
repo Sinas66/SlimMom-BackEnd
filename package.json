@@ -4,7 +4,7 @@
 	"description": "slim moms",
 	"main": "index.js",
 	"engines": {
-		"node": "10.13"
+		"node": ">10.13"
 	},
 	"scripts": {
 		"start": "node index.js",
@@ -64,6 +64,7 @@
 		"mongoose": "^5.6.8",
 		"mongoose-unique-validator": "^2.0.3",
 		"multer": "^1.4.2",
+		"swagger-ui-express": "4.0.7",
 		"uuid": "^3.3.2"
 	}
 }

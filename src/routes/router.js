@@ -1,5 +1,4 @@
 const express = require('express');
-
 const {
 	checkBodyForUserNameAndPass,
 	addFileToReq,
@@ -15,10 +14,8 @@ const {
 	getUser,
 	auth,
 } = require('../controllers/user');
-
 const calculator = require(`../controllers/calculator.controller`);
 const { createQuotes, getQuotes } = require(`../controllers/quotes`);
-
 const { createProducts, getProducts } = require('../controllers/products');
 const userEated = require('../controllers/userEated');
 
@@ -60,9 +57,9 @@ router
 	// Роут для сьеденого
 
 	// ? Записати що юзер з'їв і вернути новий документ
-	.post('/user/eat/:productId', authCheck, userEated.createUserEated)
+	.post('/user/eats/:productId', authCheck, userEated.createUserEated)
 	//! Видалити що юзер з'їв - видалити документ по ід
-	.delete('user/eat/:productId', authCheck, userEated.deleteUserEated)
+	.delete('user/eats/:productId', authCheck, userEated.deleteUserEated)
 
 	// Роут для цитат
 	.post('/quotes', addFileToReq, createQuotes)

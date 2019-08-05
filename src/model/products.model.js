@@ -24,10 +24,10 @@ const ProductsSchema = new Schema(
 		},
 		groupBloodNotAllowed: {
 			type: Object,
-			1: true,
-			2: false,
-			3: false,
-			4: true,
+			1: Boolean,
+			2: Boolean,
+			3: Boolean,
+			4: Boolean,
 		},
 	},
 	{

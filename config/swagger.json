@@ -1,0 +1,368 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"version": "1.0.0",
+		"title": "API",
+		"description": "A minimal and easy API",
+		"license": {
+			"name": "MIT",
+			"url": "https://opensource.org/licenses/MIT"
+		}
+	},
+	"basePath": "/api/v1",
+	"schemes": ["https", "http"],
+	"servers": [
+		{
+			"url": "https://slim-moms.goit.co.ua/api/v1",
+			"description": "The production API server"
+		},
+		{
+			"url": "http://localhost:8081/api/v1",
+			"description": "The production API server"
+		}
+	],
+	"tags": [
+		{
+			"name": "Public",
+			"description": "NoProtected routes"
+		},
+		{
+			"name": "Protected",
+			"description": "Protected routes"
+		}
+	],
+	"consumes": ["application/json"],
+	"produces": ["application/json"],
+	"securityDefinitions": {},
+	"paths": {
+		"/auth": {
+			"post": {
+				"tags": ["Public"],
+				"summary": "route for register / login user in system",
+				"requestBody": {
+					"description": "Optional description in *Markdown*",
+					"required": ["nickname", "password"],
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AuthRequest"
+							},
+							"example": {
+								"nickname": "petrovich",
+								"password": "password"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthResponse"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "BAD",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean",
+											"example": false
+										},
+										"message": {
+											"type": "string",
+											"example": "Invalid Password"
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/calc": {
+			"put": {
+				"tags": ["Public"],
+				"summary": "Calculate daily calories from user write in some inputs",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"height": {
+										"type": "number"
+									},
+									"currentWeight": {
+										"type": "number"
+									},
+									"age": {
+										"type": "number"
+									},
+									"desiredWeight": {
+										"type": "number"
+									},
+									"groupBlood": {
+										"type": "number"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					}
+				}
+			}
+		},
+		"/products": {
+			"get": {
+				"tags": ["Protected"],
+				"summary": "Get products for select",
+				"security": ["bearerAuth"],
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "JWT",
+						"required": true,
+						"style": "simple",
+						"schema": {
+							"$ref": "#/components/securitySchemes/bearerAuth"
+						},
+						"style": "simple"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					}
+				}
+			}
+		},
+		"/user": {
+			"put": {
+				"tags": ["Protected"],
+				"summary": "Save new user data 'CALC' (weight, height, groupBlood, ...)",
+				"security": ["bearerAuth"],
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "JWT",
+						"required": true,
+						"style": "simple",
+						"schema": {
+							"$ref": "#/components/securitySchemes/bearerAuth"
+						},
+						"style": "simple"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					}
+				}
+			}
+    },
+    "/user/eats/{date}": {
+			"get": {
+				"tags": ["Protected"],
+				"summary": "Return list eated products by date in milliseconds",
+				"security": ["bearerAuth"],
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "JWT",
+						"required": true,
+						"style": "simple",
+						"schema": {
+							"$ref": "#/components/securitySchemes/bearerAuth"
+						},
+						"style": "simple"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					}
+				}
+			}
+    },
+    "/user/eats/{productId}": {
+			"post": {
+				"tags": ["Protected"],
+				"summary": "Create new record what user eat",
+				"security": ["bearerAuth"],
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "JWT",
+						"required": true,
+						"style": "simple",
+						"schema": {
+							"$ref": "#/components/securitySchemes/bearerAuth"
+						},
+						"style": "simple"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					}
+				}
+      },
+      "delete": {
+				"tags": ["Protected"],
+				"summary": "Delete record user eat",
+				"security": ["bearerAuth"],
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "JWT",
+						"required": true,
+						"style": "simple",
+						"schema": {
+							"$ref": "#/components/securitySchemes/bearerAuth"
+						},
+						"style": "simple"
+          }
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"securitySchemes": {
+			"api_key": {
+				"type": "scheme",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			},
+			"bearerAuth": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		},
+		"schemas": {
+			"AuthRequest": {
+				"type": "object",
+				"properties": {
+					"nickname": {
+						"type": "string",
+						"maxLength": 15,
+						"minLength": 5,
+						"required": true
+					},
+					"password": {
+						"type": "string",
+						"maxLength": 12,
+						"minLength": 5,
+						"required": true
+					}
+				},
+				"required": ["nickname", "password"],
+				"example": {
+					"nickname": "petrovich",
+					"password": "password"
+				}
+			},
+			"AuthResponse": {
+				"type": "object",
+				"properties": {
+					"nickname": {
+						"type": "string",
+						"example": "petrovich"
+					},
+					"token": {
+						"type": "string",
+						"example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZDNhMTM4NmIxZTg1NTdjZjIzNjY3ODEiLCJpYXQiOjE1NjQwODcxNzV9.jSdzHuBSf4yKS6t7zwt0AoQIchHlz73JDOjfHVdbTBk"
+					}
+				}
+			}
+		},
+		"responses": {
+			"UnauthorizedError": {
+				"description": "Access token is missing or invalid"
+			}
+		}
+	}
+}
