@@ -27,8 +27,6 @@ const UserSchema = new Schema(
 		password: {
 			type: String,
 			required: true,
-			minlength: 5,
-			maxlength: 16,
 		},
 		userData: {
 			type: Object,
@@ -100,6 +98,7 @@ UserSchema.pre('findOneAndUpdate', function updateVersion() {
 });
 
 UserSchema.pre('save', function() {
+	this.hashPassword();
 	return this.createNewToken();
 });
 
@@ -117,11 +116,25 @@ UserSchema.methods.createNewToken = async function createNewToken() {
 
 	try {
 		return {
-			userName: this.userName,
+			nickname: this.nickname,
 			token: this.token,
+			userData: this.userData,
 		};
 	} catch {
-		return `something goes wrong ;(`;
+		return `something goes wrong on createNewToken User Method;(`;
+	}
+};
+
+UserSchema.methods.hashPassword = async function hashPassword() {
+	const hashedPassword = bcrypt.hashSync(this.password.trim(), 10);
+	this.password = hashedPassword;
+
+	try {
+		return {
+			password: this.password,
+		};
+	} catch {
+		return `something goes wrong on hashPassword User Method ;(`;
 	}
 };
 

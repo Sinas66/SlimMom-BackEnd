@@ -12,6 +12,7 @@ const {
 	logout,
 	updateUser,
 	getUser,
+	auth,
 } = require('../controllers/user');
 const calculator = require(`../controllers/calculator.controller`);
 const { createQuotes, getQuotes } = require(`../controllers/quotes`);
@@ -30,6 +31,8 @@ router
 		res.end('Basic api response');
 	})
 	// роут для юзера
+	.post(`/auth`, checkBodyForUserNameAndPass, auth)
+
 	.post('/login', checkBodyForUserNameAndPass, login)
 	.post('/register', checkBodyForUserNameAndPass, register)
 	.get('/logout', authCheck, logout)

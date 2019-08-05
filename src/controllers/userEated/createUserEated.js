@@ -55,46 +55,6 @@ const createUserEated = async (req, res) => {
 				.catch(sendError);
 		})
 		.catch(sendError);
-
-	// try {
-	// 	const findProduct = await Products.findOne({ _id: userProductSelected });
-
-	// 	const completeUserProductSelected = {
-	// 		title: findProduct.title,
-	// 		basicCalories: findProduct.calories,
-	// 		basicWeight: findProduct.weight,
-	// 		calories: findProduct.calories * (userProductWeight / 100),
-	// 		weight: userProductWeight,
-	// 		groupBloodNotAllowed: findProduct.groupBloodNotAllowed,
-	// 		createdDate: userDateSelected,
-	// 		userId,
-	// 	};
-
-	// 	const newRecord = await UserEated.insertOne(
-	// 		await completeUserProductSelected,
-	// 	);
-
-	// 	if (newRecord) {
-	// 		const addNewEatedProductToUser = await User.findByIdAndUpdate(
-	// 			userId,
-	// 			{
-	// 				$push: { eatsRecorded: newRecord._id },
-	// 			},
-	// 			{ new: true },
-	// 		);
-
-	// 		if (addNewEatedProductToUser) {
-	// 			res.status(201).json({
-	// 				eatedProduct: newRecord,
-	// 			});
-	// 		}
-	// 	}
-	// } catch (error) {
-	// 	res.status(400).json({
-	// 		error,
-	// 		message: error.message,
-	// 	});
-	// }
 };
 
 module.exports = createUserEated;

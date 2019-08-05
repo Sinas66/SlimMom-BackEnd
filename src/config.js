@@ -7,12 +7,14 @@ const config = {
 	// databaseUrl: `mongodb+srv://slims:goit34GH@healthproject-hrchz.mongodb.net/test?retryWrites=true&w=majority`,
 	secret: `secret key`,
 	errors: {
-		userRequired: `userName is reqaaauired`,
-		userExist: 'User doesnt exist',
-		passInvalid: `Password is ivalid`,
-		passRequired: `password is required`,
-		passAndUserRequired: `username and password is required`,
-		onlyJson: `request content-type must be application/json only`,
+		auth: {
+			userRequired: `userName is reqaaauired`,
+			userExist: 'User doesnt exist',
+			passInvalid: `Password is ivalid`,
+			passRequired: `password is required`,
+			passAndUserRequired: `username and password is required`,
+			onlyJson: `request content-type must be application/json only`,
+		},
 		calc: {
 			allFieldsAreRequired: 'All fields are required!',
 			ageHeightCeilNum: 'Age and height must be a ceil Number!',
@@ -25,6 +27,7 @@ const config = {
 			desiredWeight: 'Desired weight is required!',
 			weightRange: 'Weight must be in range 1-199',
 			onlyJson: `request content-type must be application/json only`,
+			onlyLosingWeight: 'Desired weight cant be bigget then current',
 		},
 	},
 	tokenLifeTime: `30d`,
