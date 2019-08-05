@@ -13,7 +13,7 @@ const checkBodyFornicknameAndPass = (req, res, next) => {
 			message,
 			example: {
 				nickname: 'Pasha',
-				password: 'Awesome_01',
+				password: 'Awesome_and_SEXY',
 			},
 			optional: {
 				message:
@@ -21,17 +21,13 @@ const checkBodyFornicknameAndPass = (req, res, next) => {
 				example: {
 					nickname: 'Pasha',
 					password: 'Awesome_01',
-					example: {
-						nickname: 'Pasha',
-						password: 'Awesome_01',
-						userData: {
-							currentWeight: 80,
-							desiredWeight: 60,
-							height: 170,
-							age: 25,
-							calloriesPerDay: 1543.3,
-							groupBlood: 1,
-						},
+					userData: {
+						currentWeight: 80,
+						desiredWeight: 60,
+						height: 170,
+						age: 25,
+						calloriesPerDay: 1543.3,
+						groupBlood: 1,
 					},
 				},
 			},
