@@ -1,15 +1,40 @@
-const { errors } = require(`../config.js`);
+const errors = require(`../config.js`).errors.auth;
 
-const checkBodyForUserNameAndPass = (req, res, next) => {
+const checkBodyFornicknameAndPass = (req, res, next) => {
 	const user = req.body;
 
 	const sendError = (err, code) => {
 		const statusCode = code || 400;
 		const message =
-			err || `middleware check username & password exist in req is bugy`;
+			err || `middleware check nickname & password exist in req is bugy`;
 
 		res.status(statusCode).json({
-			err: message,
+			status: 'error',
+			message,
+			example: {
+				nickname: 'Pasha',
+				password: 'Awesome_01',
+			},
+			optional: {
+				message:
+					'if user register(no token in local storage) and calc calories before = userData is required! (from redux store)',
+				example: {
+					nickname: 'Pasha',
+					password: 'Awesome_01',
+					example: {
+						nickname: 'Pasha',
+						password: 'Awesome_01',
+						userData: {
+							currentWeight: 80,
+							desiredWeight: 60,
+							height: 170,
+							age: 25,
+							calloriesPerDay: 1543.3,
+							groupBlood: 1,
+						},
+					},
+				},
+			},
 		});
 	};
 
@@ -17,12 +42,12 @@ const checkBodyForUserNameAndPass = (req, res, next) => {
 		sendError(errors.onlyJson); // Пропускаем только json
 		return;
 	}
-	if (!user.userName && !user.password) {
-		sendError(errors.passAndUserRequired); // Если нет userName и password то шлем ошибку
+	if (!user.nickname && !user.password) {
+		sendError(errors.passAndUserRequired); // Если нет nickname и password то шлем ошибку
 		return;
 	}
-	if (!user.userName) {
-		sendError(errors.userRequired); // Если нет userName то шлем ошибку
+	if (!user.nickname) {
+		sendError(errors.userRequired); // Если нет nickname то шлем ошибку
 		return;
 	}
 	if (!user.password) {
@@ -33,4 +58,4 @@ const checkBodyForUserNameAndPass = (req, res, next) => {
 	next();
 };
 
-module.exports = checkBodyForUserNameAndPass;
+module.exports = checkBodyFornicknameAndPass;

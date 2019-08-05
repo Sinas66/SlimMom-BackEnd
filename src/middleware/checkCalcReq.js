@@ -68,6 +68,11 @@ const checkCalcReq = (req, res, next) => {
 		return;
 	}
 
+	if (currentWeight < desiredWeight) {
+		sendError(errors.onlyLosingWeight);
+		return;
+	}
+
 	next();
 };
 
