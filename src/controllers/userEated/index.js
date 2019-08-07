@@ -1,6 +1,6 @@
-const createUserEated = require('./createUserEated');
-const deleteUserEated = require('./deleteUserEated');
-const getUserEated = require(`./getUserEated`);
+const createUserEated = require('./createUserEated.controller');
+const deleteUserEated = require('./deleteUserEated.controller');
+const getUserEated = require(`./getUserEated.controller`);
 
 module.exports = {
 	createUserEated,

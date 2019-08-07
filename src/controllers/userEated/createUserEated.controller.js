@@ -1,34 +1,36 @@
 const Products = require('../../model/products.model');
 const UserEated = require('../../model/userEated.model');
 const User = require('../../model/user.model');
+const errors = require('../../config').errors.products;
 
 const createUserEated = async (req, res) => {
 	const { userId } = req;
 	const userProductSelected = req.params.productId;
 	const userProductWeight = req.body.weight;
 	const userDateSelected = req.body.date;
-	console.log({ userProductWeight });
+
 	const sendError = err => {
 		res.status(400).json({
-			err,
+			status: 'error',
 			message: err.message,
 		});
 	};
 
-	const sendResponse = data => {
+	const sendResponse = products => {
 		res.status(201).json({
 			status: `success`,
-			eatedProduct: data,
+			products,
 		});
 	};
 
 	Products.findOne({ _id: userProductSelected })
 		.then(findProduct => {
+			if (!findProduct) throw errors.doestExist;
 			return {
 				title: findProduct.title,
 				basicCalories: findProduct.calories,
 				basicWeight: findProduct.weight,
-				calories: findProduct.calories * (userProductWeight / 100),
+				calories: (findProduct.calories * (userProductWeight / 100)).toFixed(1),
 				weight: userProductWeight,
 				groupBloodNotAllowed: findProduct.groupBloodNotAllowed,
 				createdDate: userDateSelected,
@@ -36,6 +38,7 @@ const createUserEated = async (req, res) => {
 			};
 		})
 		.then(eatedProduct => {
+			// console.log(eatedProduct);
 			UserEated.create(eatedProduct)
 				.then(newRecord => {
 					User.findByIdAndUpdate(
@@ -45,10 +48,14 @@ const createUserEated = async (req, res) => {
 						},
 						{ new: true },
 					)
-						// .then(() => {
-						// 	return UserEated.find({ userId });
-						// })
-						.then(() => sendResponse())
+						.then(() => {
+							const resp = {
+								...newRecord._doc,
+							};
+							delete resp.userId;
+
+							sendResponse(resp);
+						})
 						.catch(sendError);
 				})
 
