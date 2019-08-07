@@ -46,7 +46,7 @@ const register = (req, res) => {
 	newUser
 		.save()
 		.then(userFromDB => ({
-			userName: userFromDB.nickname,
+			nickname: userFromDB.nickname,
 			token: userFromDB.token,
 			userData: userFromDB.userData,
 			createdAt: userFromDB.createdAt,

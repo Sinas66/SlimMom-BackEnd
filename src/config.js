@@ -8,11 +8,11 @@ const config = {
 	secret: `secret key`,
 	errors: {
 		auth: {
-			userRequired: `userName is reqaaauired`,
+			userRequired: `nickname is reqaaauired`,
 			userExist: 'User doesnt exist',
 			passInvalid: `Password is invalid`,
 			passRequired: `password is required`,
-			passAndUserRequired: `username and password is required`,
+			passAndUserRequired: `nickname and password is required`,
 			onlyJson: `request content-type must be application/json only`,
 		},
 		calc: {
