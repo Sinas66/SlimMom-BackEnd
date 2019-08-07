@@ -5,7 +5,7 @@ const errors = require('../../config').errors.products;
 const createUserEated = async (req, res) => {
 	const { userId } = req;
 	const { productId } = req.params;
-	console.log({ productId });
+	// console.log({ productId });
 
 	const sendResponse = () => {
 		res.status(201).json({

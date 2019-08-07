@@ -99,7 +99,7 @@ UserSchema.pre('findOneAndUpdate', function updateVersion() {
 
 UserSchema.pre('save', function() {
 	this.hashPassword();
-	return this.createNewToken();
+	this.createNewToken();
 });
 
 UserSchema.methods.comparePassword = function comparePassword(pass) {
@@ -126,8 +126,8 @@ UserSchema.methods.createNewToken = async function createNewToken() {
 };
 
 UserSchema.methods.hashPassword = async function hashPassword() {
-	const hashedPassword = bcrypt.hashSync(this.password.trim(), 10);
-	this.password = hashedPassword;
+	const hashedPassword = await bcrypt.hashSync(this.password.trim(), 10);
+	this.password = await hashedPassword;
 
 	try {
 		return {
