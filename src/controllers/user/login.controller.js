@@ -4,7 +4,6 @@ const errors = require(`../../config`).errors.auth;
 
 const login = (req, res) => {
 	const user = req.body;
-	console.log(user);
 	const sendResponse = data => {
 		res.json({
 			status: 'success',
