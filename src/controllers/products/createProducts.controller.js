@@ -6,6 +6,7 @@ const fs = require(`fs`);
 const Products = require(`../../model/products.model`);
 
 const createProducts = (req, res) => {
+	console.log(req.file);
 	const productsFilePath = path.join(
 		__dirname,
 		'../../../uploads',

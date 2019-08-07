@@ -29,6 +29,9 @@ const config = {
 			onlyJson: `request content-type must be application/json only`,
 			onlyLosingWeight: 'Desired weight cant be bigget then current',
 		},
+		products: {
+			doestExist: 'No such product',
+		},
 	},
 	tokenLifeTime: `30d`,
 };

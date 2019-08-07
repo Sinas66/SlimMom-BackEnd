@@ -1,5 +1,5 @@
-const login = require(`./login`);
-const register = require('./register');
+const login = require(`./login.controller`);
+const register = require('./register.controller');
 const logout = require('./logout');
 
 const auth = require(`./auth.controller`);
