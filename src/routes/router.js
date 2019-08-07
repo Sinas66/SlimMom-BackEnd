@@ -17,7 +17,11 @@ const {
 const calculator = require(`../controllers/calculator.controller`);
 const { createQuotes, getQuotes } = require(`../controllers/quotes`);
 const { createProducts, getProducts } = require('../controllers/products');
-const userEated = require('../controllers/userEated');
+const {
+	createUserEated,
+	deleteUserEated,
+	getUserEated,
+} = require('../controllers/userEated');
 
 const noSuchPageHandler = (req, res) => {
 	res.status(404).json({
@@ -57,9 +61,11 @@ router
 	// Роут для сьеденого
 
 	// ? Записати що юзер з'їв і вернути новий документ
-	.post('/user/eats/:productId', authCheck, userEated.createUserEated)
+	.post('/user/eats/:productId', authCheck, createUserEated)
 	//! Видалити що юзер з'їв - видалити документ по ід
-	.delete('user/eats/:productId', authCheck, userEated.deleteUserEated)
+	.delete('/user/eats/:productId', authCheck, deleteUserEated)
+	// Получить продукты юзера за определенный день
+	.get('/user/eats/:date', authCheck, getUserEated)
 
 	// Роут для цитат
 	.post('/quotes', addFileToReq, createQuotes)

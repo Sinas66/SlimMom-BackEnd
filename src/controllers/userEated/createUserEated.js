@@ -7,7 +7,7 @@ const createUserEated = async (req, res) => {
 	const userProductSelected = req.params.productId;
 	const userProductWeight = req.body.weight;
 	const userDateSelected = req.body.date;
-
+	console.log({ userProductWeight });
 	const sendError = err => {
 		res.status(400).json({
 			err,
@@ -45,10 +45,10 @@ const createUserEated = async (req, res) => {
 						},
 						{ new: true },
 					)
-						.then(() => {
-							return UserEated.find({ userId });
-						})
-						.then(sendResponse)
+						// .then(() => {
+						// 	return UserEated.find({ userId });
+						// })
+						.then(() => sendResponse())
 						.catch(sendError);
 				})
 
