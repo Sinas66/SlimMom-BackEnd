@@ -10,7 +10,7 @@ const config = {
 		auth: {
 			userRequired: `userName is reqaaauired`,
 			userExist: 'User doesnt exist',
-			passInvalid: `Password is ivalid`,
+			passInvalid: `Password is invalid`,
 			passRequired: `password is required`,
 			passAndUserRequired: `username and password is required`,
 			onlyJson: `request content-type must be application/json only`,

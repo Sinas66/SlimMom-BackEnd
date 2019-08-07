@@ -1,10 +1,10 @@
 const User = require('../../model/user.model');
 
-const errors = require(`../../config`);
+const errors = require(`../../config`).errors.auth;
 
 const login = (req, res) => {
 	const user = req.body;
-
+	console.log(user);
 	const sendResponse = data => {
 		res.json({
 			status: 'success',
@@ -23,13 +23,15 @@ const login = (req, res) => {
 		});
 	};
 
-	const userNameReq = user.userName.trim().toLowerCase(); // Тримим и ловеркейсим userName
-	const userPasswordReq = user.password.trim(); // Тримим и ловеркейсим userName
+	const nicknameReq = user.nickname.trim().toLowerCase(); // Тримим и ловеркейсим userName
+	const userPasswordReq = user.password.trim(); // Тримим и пароль
+	// console.log({ userPasswordReq });
 
-	const findUser = User.findOne({ userName: userNameReq });
+	const findUser = User.findOne({ nickname: nicknameReq });
 
 	findUser
 		.then(userFromDB => {
+			// console.log(userFromDB);
 			if (!userFromDB) {
 				throw errors.userExist; // Если юзер не найдет, кидаем ошибку
 			}
