@@ -4,15 +4,19 @@ const User = require('../../model/user.model');
 const errors = require('../../config').errors.products;
 
 const createUserEated = async (req, res) => {
-	const { userId } = req;
+	const userId = req.user._id;
 	const userProductSelected = req.params.productId;
 	const userProductWeight = req.body.weight;
 	const userDateSelected = req.body.date;
 
 	const sendError = err => {
+		let message = err.message ? err.message : err;
+		if (err && err.message.includes('_id')) {
+			message = errors.doestExist;
+		}
 		res.status(400).json({
 			status: 'error',
-			message: err.message,
+			message,
 		});
 	};
 
@@ -25,7 +29,6 @@ const createUserEated = async (req, res) => {
 
 	Products.findOne({ _id: userProductSelected })
 		.then(findProduct => {
-			if (!findProduct) throw errors.doestExist;
 			return {
 				title: findProduct.title,
 				basicCalories: findProduct.calories,

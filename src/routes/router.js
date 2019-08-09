@@ -69,6 +69,7 @@ router
 	.get('/quotes', getQuotes)
 
 	// если нет пути шлем ошибку
-	.get('*', noSuchPageHandler);
+	.all('*', noSuchPageHandler);
+// .post('*', noSuchPageHandler);
 
 module.exports = router;

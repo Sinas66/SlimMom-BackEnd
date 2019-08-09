@@ -3,7 +3,7 @@ const User = require('../../model/user.model');
 const errors = require('../../config').errors.products;
 
 const createUserEated = async (req, res) => {
-	const { userId } = req;
+	const userId = req.user._id;
 	const { productId } = req.params;
 	// console.log({ productId });
 
@@ -14,16 +14,30 @@ const createUserEated = async (req, res) => {
 	};
 
 	const sendError = err => {
-		console.log(err);
+		let message = err.message ? err.message : err;
+		if (err && err.message.includes('_id')) {
+			message = errors.doestExist;
+		}
+
 		res.status(400).json({
 			status: 'error',
-			message: err.message,
+			message,
 		});
 	};
 
+	// const sendError = err => {
+	// 	let message = err.message ? err.message : err;
+	// 	if (err && err.message.includes('_id')) {
+	// 		message = errors.doestExist;
+	// 	}
+	// 	res.status(400).json({
+	// 		status: 'error',
+	// 		message,
+	// 	});
+	// };
+
 	UserEated.findByIdAndRemove(productId)
-		.then(deletedProd => {
-			if (!deletedProd) throw errors.doestExist;
+		.then(() => {
 			User.findByIdAndUpdate(
 				userId,
 				{
