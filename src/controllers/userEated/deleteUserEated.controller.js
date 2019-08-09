@@ -3,7 +3,7 @@ const User = require('../../model/user.model');
 const errors = require('../../config').errors.products;
 
 const createUserEated = async (req, res) => {
-	const { userId } = req;
+	const userId = req.user._id;
 	const { productId } = req.params;
 	// console.log({ productId });
 

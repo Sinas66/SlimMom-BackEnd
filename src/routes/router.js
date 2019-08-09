@@ -53,7 +53,7 @@ router
 
 	// роут Продуктов
 	.post('/products/file', addFileToReq, createProducts) // Добавить продукты в дб
-	.get('/products/:groupBlood', getProducts) // Получить все продукты из дб
+	.get('/products', getProducts) // Получить все продукты из дб
 	// .put('/update-products', null)
 	// .get('/products', null)
 	// .delete('/delete-all-products', null)

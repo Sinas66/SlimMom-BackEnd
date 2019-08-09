@@ -13,7 +13,7 @@ const updateUser = (req, res) => {
 
 	const sendError = err => {
 		res.status(400).json({
-			err,
+			status: 'error',
 			message: err.message,
 		});
 	};
@@ -23,11 +23,9 @@ const updateUser = (req, res) => {
 		{ $set: { userData: newUserData } },
 		{ new: true },
 	)
-		.then(data => {
-			const respData = {
-				...data,
-			};
-			sendResponse(respData);
+		.then(newUser => {
+			const { userData } = newUser;
+			sendResponse(userData);
 		})
 		.catch(sendError);
 };
