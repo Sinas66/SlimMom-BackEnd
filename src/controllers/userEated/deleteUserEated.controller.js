@@ -14,16 +14,30 @@ const createUserEated = async (req, res) => {
 	};
 
 	const sendError = err => {
-		console.log(err);
+		let message = err.message ? err.message : err;
+		if (err && err.message.includes('_id')) {
+			message = errors.doestExist;
+		}
+
 		res.status(400).json({
 			status: 'error',
-			message: err.message,
+			message,
 		});
 	};
 
+	// const sendError = err => {
+	// 	let message = err.message ? err.message : err;
+	// 	if (err && err.message.includes('_id')) {
+	// 		message = errors.doestExist;
+	// 	}
+	// 	res.status(400).json({
+	// 		status: 'error',
+	// 		message,
+	// 	});
+	// };
+
 	UserEated.findByIdAndRemove(productId)
-		.then(deletedProd => {
-			if (!deletedProd) throw errors.doestExist;
+		.then(() => {
 			User.findByIdAndUpdate(
 				userId,
 				{

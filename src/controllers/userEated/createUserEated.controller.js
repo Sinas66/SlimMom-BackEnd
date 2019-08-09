@@ -10,9 +10,13 @@ const createUserEated = async (req, res) => {
 	const userDateSelected = req.body.date;
 
 	const sendError = err => {
+		let message = err.message ? err.message : err;
+		if (err && err.message.includes('_id')) {
+			message = errors.doestExist;
+		}
 		res.status(400).json({
 			status: 'error',
-			message: err.message,
+			message,
 		});
 	};
 
@@ -25,7 +29,6 @@ const createUserEated = async (req, res) => {
 
 	Products.findOne({ _id: userProductSelected })
 		.then(findProduct => {
-			if (!findProduct) throw errors.doestExist;
 			return {
 				title: findProduct.title,
 				basicCalories: findProduct.calories,
