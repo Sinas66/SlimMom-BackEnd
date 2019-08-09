@@ -1,7 +1,7 @@
 const User = require(`../../model/user.model`);
 
 const getUser = (req, res) => {
-	const userId = req.user.id;
+	const userId = req.user._id;
 
 	const sendResponse = data => {
 		res.json({
