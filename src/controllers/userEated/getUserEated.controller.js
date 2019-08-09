@@ -1,43 +1,38 @@
-const UserEated = require('../../model/userEated.model');
+// const UserEated = require('../../model/userEated.model');
 
 const getUserEated = (req, res) => {
-	const { userId } = req;
+	// const userId = req.user._id;
+	const dateFromReq = req.params.date;
+	// const newDate = new Date(dateFromReq);
 
-	console.log({ params: req.params.date });
+	// const newDateToISO = newDate.toISOString();
+	// console.log({ newDateToISO });
 
-	const dateFromReq = Date(req.params.date);
-	console.log({ dateFromReq });
+	res.json({ dateFromReq, user: req.user });
+	// const sendResponse = products => {
+	// 	res.json({
+	// 		status: 'success',
+	// 		products,
+	// 	});
+	// };
 
-	const newDate = new Date(dateFromReq);
-	console.log({ newDate });
+	// // Надо что б возвращало все продукты сьденые юзером за определенный день
 
-	const newDateToISO = newDate.toISOString();
-	console.log({ newDateToISO });
+	// const sendError = err => {
+	// 	res.json({
+	// 		status: 'error',
+	// 		message: err.message,
+	// 	});
+	// };
 
-	const sendResponse = products => {
-		res.json({
-			status: 'success',
-			products,
-		});
-	};
-
-	// Надо что б возвращало все продукты сьденые юзером за определенный день
-
-	const sendError = err => {
-		res.json({
-			status: 'error',
-			message: err.message,
-		});
-	};
-
-	UserEated.find({ userId, createdDate: { $eq: newDateToISO } })
-		.then(data => {
-			console.log(data);
-			return data;
-		})
-		// UserEated.find()
-		.then(sendResponse)
-		.catch(sendError);
+	// UserEated.find({ userId, createdDate: { $eq: newDateToISO } })
+	// 	.then(data => {
+	// 		console.log(data);
+	// 		return data;
+	// 	})
+	// 	// UserEated.find()
+	// 	.then(sendResponse)
+	// 	.catch(sendError);
 };
 
 module.exports = getUserEated;

@@ -44,7 +44,7 @@ router
 
 	// PRIVATE
 	.use(authCheck)
-	.get('/logout', logout)
+	.get('/logout', authCheck, logout)
 	.put('/user', authCheck, updateUser)
 	.get('/user', authCheck, getUser)
 
@@ -60,13 +60,18 @@ router
 	// .delete('/delete-one-products', null)
 
 	// Роут для сьеденого
-	.post('/user/eats/:productId', checkCreateNewEated, createUserEated) // ? Записати що юзер з'їв і вернути новий документ
-	.delete('/user/eats/:productId', deleteUserEated) //! Видалити що юзер з'їв - видалити документ по ід
-	.get('/user/eats/:date', getUserEated) // Получить продукты юзера за определенный день
+	.post(
+		'/user/eats/:productId',
+		authCheck,
+		checkCreateNewEated,
+		createUserEated,
+	) // ? Записати що юзер з'їв і вернути новий документ
+	.delete('/user/eats/:productId', authCheck, deleteUserEated) //! Видалити що юзер з'їв - видалити документ по ід
+	.get('/user/eats/:date', authCheck, getUserEated) // Получить продукты юзера за определенный день
 
 	// Роут для цитат
-	.post('/quotes', addFileToReq, createQuotes)
-	.get('/quotes', getQuotes)
+	.post('/quotes', authCheck, addFileToReq, createQuotes)
+	.get('/quotes', authCheck, getQuotes)
 
 	// если нет пути шлем ошибку
 	.get('*', noSuchPageHandler);

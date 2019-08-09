@@ -43,7 +43,7 @@ const UserSchema = new Schema(
 				max: 99,
 				maxlength: 2,
 			},
-			weight: {
+			desiredWeight: {
 				type: Number,
 				min: 1,
 				max: 199,
@@ -63,6 +63,9 @@ const UserSchema = new Schema(
 			groupBlood: {
 				type: Number,
 				enum: [1, 2, 3, 4],
+			},
+			dailyRate: {
+				type: String,
 			},
 		},
 		token: { type: String },
