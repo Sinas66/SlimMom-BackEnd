@@ -1,7 +1,6 @@
 const checkCreateNewEated = (req, res, next) => {
 	const userProductSelected = req.params.productId;
 	const userProductWeight = req.body.weight;
-	const userDateSelected = req.body.date;
 
 	const sendError = err => {
 		res.status(400).json({
@@ -13,7 +12,11 @@ const checkCreateNewEated = (req, res, next) => {
 			},
 		});
 	};
-	if (req.headers[`content-type`] !== `application/json`) {
+
+	if (
+		req.headers[`content-type`].match(/application\/json/)[0] !==
+		`application/json`
+	) {
 		sendError('request content-type must be application/json only'); // Пропускаем только json
 		return;
 	}
@@ -23,10 +26,6 @@ const checkCreateNewEated = (req, res, next) => {
 	}
 	if (!userProductWeight) {
 		sendError('Eated product weight is required ');
-		return;
-	}
-	if (!userDateSelected) {
-		sendError('Eated date is required');
 		return;
 	}
 

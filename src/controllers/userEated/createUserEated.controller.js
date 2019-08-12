@@ -7,7 +7,6 @@ const createUserEated = async (req, res) => {
 	const userId = req.user._id;
 	const userProductSelected = req.params.productId;
 	const userProductWeight = req.body.weight;
-	const userDateSelected = req.body.date;
 
 	const sendError = err => {
 		let message = err.message ? err.message : err;
@@ -36,12 +35,10 @@ const createUserEated = async (req, res) => {
 				calories: (findProduct.calories * (userProductWeight / 100)).toFixed(1),
 				weight: userProductWeight,
 				groupBloodNotAllowed: findProduct.groupBloodNotAllowed,
-				createdDate: userDateSelected,
 				userId,
 			};
 		})
 		.then(eatedProduct => {
-			// console.log(eatedProduct);
 			UserEated.create(eatedProduct)
 				.then(newRecord => {
 					User.findByIdAndUpdate(
