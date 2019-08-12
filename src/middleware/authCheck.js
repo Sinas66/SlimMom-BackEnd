@@ -16,16 +16,14 @@ const authCheck = (req, res, next) => {
 
 	if (token) {
 		const clearToken = token.replace(`Bearer `, ``);
-		// console.log({ clearToken });
 
 		jwt.verify(clearToken, SECRET_KEY, (err, decoded) => {
 			if (err) {
 				res.status(401).json({
-					error: err,
+					status: 'error',
 					message: err.message,
 				});
 			}
-
 			User.findById({ _id: decoded.userId })
 				.then(findUser => {
 					req.user = findUser;
@@ -35,7 +33,7 @@ const authCheck = (req, res, next) => {
 		});
 	} else {
 		res.status(401).json({
-			err: `error`,
+			status: `error`,
 			message: `Not Authorization field in header`,
 		});
 	}

@@ -44,9 +44,9 @@ router
 
 	// PRIVATE
 	.use(authCheck)
-	.get('/logout', authCheck, logout)
-	.put('/user', authCheck, updateUser)
-	.get('/user', authCheck, getUser)
+	.get('/logout', logout)
+	.put('/user', updateUser)
+	.get('/user', getUser)
 
 	// роут для калькулятора
 	// .post('/calc', checkCalcReq, calculator)
