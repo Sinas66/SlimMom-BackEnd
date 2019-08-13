@@ -44,7 +44,6 @@ router
 
 	// PRIVATE
 	.use(authCheck)
-	.get('/logout', logout)
 	.put('/user', updateUser)
 	.get('/user', getUser)
 
@@ -73,6 +72,8 @@ router
 	.post('/quotes', authCheck, addFileToReq, createQuotes)
 	.get('/quotes', authCheck, getQuotes)
 
+	// Logout
+	.post('/logout', logout)
 	// если нет пути шлем ошибку
 	.all('*', noSuchPageHandler);
 // .post('*', noSuchPageHandler);
