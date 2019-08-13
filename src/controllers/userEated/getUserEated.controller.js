@@ -4,12 +4,16 @@ const getUserEated = async (req, res) => {
 	const userId = req.user._id;
 	const dateFromReq = req.params.date;
 
-	const dateToStartDay = await new Date(Date(dateFromReq));
-	const getDate = await new Date(dateToStartDay).getDate();
-	await dateToStartDay.setDate(getDate);
+	const dateToStartDay = await new Date(dateFromReq);
+	const getDate = await new Date(dateFromReq).getDate();
+	// await dateToStartDay.setDate(getDate);
 	await dateToStartDay.setHours(3, 0, 0, 0);
 
-	const dateToEndDay = new Date(Date(dateFromReq)).setHours(23, 59, 59, 999);
+	const dateToEndDay = new Date(
+		new Date(new Date(dateFromReq).setHours(2, 59, 59, 999)).setDate(
+			getDate + 1,
+		),
+	).toISOString();
 
 	const sendResponse = products => {
 		res.json({
@@ -24,7 +28,10 @@ const getUserEated = async (req, res) => {
 			message: err.message,
 		});
 	};
-
+	// console.log({ dateToStartDay });
+	// console.log({ dateToEndDay });
+	// console.log({ dateFromReq });
+	// console.log({ getDate });
 	UserEated.find(
 		{
 			userId,
@@ -43,6 +50,7 @@ const getUserEated = async (req, res) => {
 		},
 	)
 		.then(data => {
+			console.log({ data });
 			sendResponse(data);
 		})
 		.catch(sendError);
