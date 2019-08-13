@@ -65,7 +65,7 @@ const UserSchema = new Schema(
 				enum: [1, 2, 3, 4],
 			},
 			dailyRate: {
-				type: String,
+				type: Number,
 			},
 		},
 		token: { type: String },

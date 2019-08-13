@@ -45,7 +45,11 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/RegistrationRequest"
+								"oneOf": [
+									{ "$ref": "#/components/schemas/RegistrationRequest" },
+									{ "$ref": "#/components/schemas/SimpleRegister" }
+								],
+								"example": { "nickname": "blabla", "password": "password" }
 							}
 						}
 					}
@@ -117,13 +121,9 @@
 								"schema": {
 									"type": "object",
 									"properties": {
-										"success": {
+										"err": {
 											"type": "string",
-											"example": "error"
-										},
-										"message": {
-											"type": "string",
-											"example": "Invalid Password"
+											"example": "Password is invalid"
 										}
 									}
 								}
@@ -168,9 +168,9 @@
 			}
 		},
 		"/user": {
-			"put": {
+			"get": {
 				"tags": ["Protected"],
-				"summary": "Save new user data 'CALC' (weight, height, groupBlood, ...)",
+				"summary": "Get User data and check Token validation",
 				"security": ["bearerAuth"],
 				"parameters": [
 					{
@@ -190,7 +190,48 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "object"
+									"$ref": "#/components/schemas/RegistrationResponse & LoginResponse"
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					}
+				}
+			},
+			"put": {
+				"tags": ["Protected"],
+				"summary": "Save new user data 'CALC' (weight, height, groupBlood, ...)",
+				"security": ["bearerAuth"],
+				"parameters": [
+					{
+						"name": "Authorization",
+						"in": "header",
+						"description": "JWT",
+						"required": true,
+						"style": "simple",
+						"schema": {
+							"$ref": "#/components/securitySchemes/bearerAuth"
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdateUserDataRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UpdateUserDataRespond"
 								}
 							}
 						}
@@ -216,7 +257,6 @@
 						"schema": {
 							"$ref": "#/components/securitySchemes/bearerAuth"
 						}
-
 					}
 				],
 				"responses": {
@@ -251,7 +291,6 @@
 						"schema": {
 							"$ref": "#/components/securitySchemes/bearerAuth"
 						}
-
 					}
 				],
 				"responses": {
@@ -284,7 +323,6 @@
 						"schema": {
 							"$ref": "#/components/securitySchemes/bearerAuth"
 						}
-
 					}
 				],
 				"responses": {
@@ -319,6 +357,54 @@
 			}
 		},
 		"schemas": {
+			"UpdateUserDataRespond": {
+				"type": "object",
+				"properties": {
+					"status": {
+						"type": "string",
+						"default": "success",
+						"example": "success"
+					},
+					"userData": {
+						"$ref": "#/components/schemas/UpdateUserDataRequest"
+					}
+				}
+			},
+			"UpdateUserDataRequest": {
+				"type": "object",
+				"properties": {
+					"age": {
+						"type": "number",
+						"minimum": 1,
+						"maximum": 99,
+						"maxLength": 2
+					},
+					"desiredWeight": {
+						"type": "number",
+						"minimum": 1,
+						"maximum": 199,
+						"maxLength": 3
+					},
+					"height": {
+						"type": "number",
+						"minimum": 1,
+						"maximum": 230
+					},
+					"currentWeight": {
+						"type": "number",
+						"minimum": 1,
+						"maximum": 199,
+						"maxLength": 3
+					},
+					"groupBlood": {
+						"type": "number",
+						"enum": [1, 2, 3, 4]
+					},
+					"dailyRate": {
+						"type": "number"
+					}
+				}
+			},
 			"RegistrationRequest": {
 				"type": "object",
 				"properties": {
@@ -383,6 +469,26 @@
 				},
 				"required": ["nickname", "password"]
 			},
+			"SimpleRegister": {
+				"type": "object",
+				"properties": {
+					"nickname": {
+						"type": "string",
+						"maxLength": 15,
+						"minLength": 5,
+						"required": true,
+						"example": "Pasha"
+					},
+					"password": {
+						"type": "string",
+						"maxLength": 12,
+						"minLength": 5,
+						"required": true,
+						"example": "Awesome_01"
+					}
+				},
+				"required": ["nickname", "password"]
+			},
 			"LoginRequest": {
 				"type": "object",
 				"properties": {
@@ -406,13 +512,59 @@
 			"RegistrationResponse & LoginResponse": {
 				"type": "object",
 				"properties": {
-					"nickname": {
+					"status": {
 						"type": "string",
-						"example": "Pasha"
+						"example": "success"
 					},
-					"token": {
-						"type": "string",
-						"example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZDNhMTM4NmIxZTg1NTdjZjIzNjY3ODEiLCJpYXQiOjE1NjQwODcxNzV9.jSdzHuBSf4yKS6t7zwt0AoQIchHlz73JDOjfHVdbTBk"
+					"user": {
+						"type": "object",
+						"properties": {
+							"nickname": {
+								"type": "string",
+								"example": "Pasha"
+							},
+							"token": {
+								"type": "string",
+								"example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZDNhMTM4NmIxZTg1NTdjZjIzNjY3ODEiLCJpYXQiOjE1NjQwODcxNzV9.jSdzHuBSf4yKS6t7zwt0AoQIchHlz73JDOjfHVdbTBk"
+							},
+							"userData": {
+								"type": "object",
+								"properties": {
+									"age": {
+										"type:": "number",
+										"min": 1,
+										"max": 99,
+										"maxLength": 2,
+										"example": 25
+									},
+									"desiredWeight": {
+										"type": "number",
+										"min": 1,
+										"max": 199,
+										"maxLength": 3,
+										"example": 60
+									},
+									"height": {
+										"type": "number",
+										"min": 1,
+										"max": 230,
+										"example": 175
+									},
+									"currentWeight": {
+										"type": "number",
+										"min": 1,
+										"max": 199,
+										"maxLength": 3,
+										"example": 80
+									},
+									"groupBlood": {
+										"type": "Number",
+										"enum": [1, 2, 3, 4],
+										"example": 1
+									}
+								}
+							}
+						}
 					}
 				}
 			}
