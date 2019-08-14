@@ -48,11 +48,14 @@ const createUserEated = async (req, res) => {
 						},
 						{ new: true },
 					)
+						.lean()
 						.then(() => {
 							const resp = {
-								...newRecord._doc,
+								title: newRecord.title,
+								weight: newRecord.weight,
+								calories: newRecord.calories,
+								_id: newRecord._id,
 							};
-							delete resp.userId;
 
 							sendResponse(resp);
 						})

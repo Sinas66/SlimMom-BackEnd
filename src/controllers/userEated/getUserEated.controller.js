@@ -28,10 +28,6 @@ const getUserEated = async (req, res) => {
 			message: err.message,
 		});
 	};
-	// console.log({ dateToStartDay });
-	// console.log({ dateToEndDay });
-	// console.log({ dateFromReq });
-	// console.log({ getDate });
 	UserEated.find(
 		{
 			userId,
@@ -50,7 +46,6 @@ const getUserEated = async (req, res) => {
 		},
 	)
 		.then(data => {
-			console.log({ data });
 			sendResponse(data);
 		})
 		.catch(sendError);

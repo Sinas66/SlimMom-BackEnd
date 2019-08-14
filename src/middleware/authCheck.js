@@ -26,6 +26,12 @@ const authCheck = (req, res, next) => {
 			}
 			User.findById({ _id: decoded.userId })
 				.then(findUser => {
+					if (findUser === null) {
+						res.status(401).json({
+							status: 'error',
+							message: 'user not auth',
+						});
+					}
 					req.user = findUser;
 					next();
 				})
