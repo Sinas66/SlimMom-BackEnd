@@ -25,7 +25,7 @@ const getProducts = (req, res) => {
 			label: el.title.ru,
 			color: '#000',
 		};
-		if (user.userData.groupBlood) {
+		if (user.userData) {
 			const { groupBlood } = user.userData;
 			formatProduct = {
 				...formatProduct,
@@ -50,34 +50,3 @@ const getProducts = (req, res) => {
 };
 
 module.exports = getProducts;
-
-// if (search) {
-// 	Products.find({ 'title.ru': { $regex: search, $options: 'i' } })
-// 		.lean()
-// 		.then(products => products.map(formatRespAndCheckBlood))
-// 		.then(sendResponse)
-// 		.catch(sendError);
-// } else {
-// 	Products.find()
-// 		.lean()
-// 		.then(products => products.map(formatRespAndCheckBlood))
-// 		.then(sendResponse)
-// 		.catch(sendError);
-// }
-
-// 	if (user.userData.groupBlood) {
-// 		const { groupBlood } = user.userData;
-// 		return {
-// 			value: el._id,
-// 			label: el.title.ru,
-// 			color:
-// 				el.groupBloodNotAllowed[String(groupBlood)] === true
-// 					? '#f00'
-// 					: '#0f0',
-// 		};
-// 	}
-// 	return {
-// 		value: el._id,
-// 		label: el.title.ru,
-// 		color: '#000',
-// 	};
