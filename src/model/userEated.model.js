@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const moment = require('moment-timezone');
+const dateKiev = moment.tz(Date.now(), 'Europe/Kiev');
 
 const UserEatedSchema = new Schema({
 	title: {
@@ -33,7 +35,7 @@ const UserEatedSchema = new Schema({
 	},
 	createdDate: {
 		type: Date,
-		default: Date.now(),
+		default: dateKiev,
 	},
 	userId: {
 		type: Schema.Types.ObjectId,

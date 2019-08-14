@@ -6,7 +6,6 @@ const getUserEated = async (req, res) => {
 
 	const dateToStartDay = await new Date(dateFromReq);
 	const getDate = await new Date(dateFromReq).getDate();
-	// await dateToStartDay.setDate(getDate);
 	await dateToStartDay.setHours(3, 0, 0, 0);
 
 	const dateToEndDay = new Date(
