@@ -43,6 +43,7 @@ const getProducts = (req, res) => {
 		: null;
 
 	Products.find(searchFilter)
+		.sort({ 'title.ru': 1 })
 		.lean()
 		.then(products => products.map(formatRespAndCheckBlood))
 		.then(sendResponse)
