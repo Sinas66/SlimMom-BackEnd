@@ -43,8 +43,22 @@ const getProducts = (req, res) => {
 		: null;
 
 	Products.find(searchFilter)
-		.sort({ 'title.ru': 1 })
+		// .sort({ 'title.ru': 1 })
 		.lean()
+		.then(products => {
+			products.sort((a, b) => {
+				const indexA = a.title.ru.toLowerCase().indexOf(search.toLowerCase());
+				const indexB = b.title.ru.toLowerCase().indexOf(search.toLowerCase());
+				if (indexA > indexB) {
+					return 1;
+				}
+				if (indexA < indexB) {
+					return -1;
+				}
+				return 0;
+			});
+			return products;
+		})
 		.then(products => products.map(formatRespAndCheckBlood))
 		.then(sendResponse)
 		.catch(sendError);
