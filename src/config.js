@@ -14,6 +14,7 @@ const config = {
 			passRequired: `password is required`,
 			passAndUserRequired: `nickname and password is required`,
 			onlyJson: `request content-type must be application/json only`,
+			passInvalidLength: 'Password must be at last 5 charecters',
 		},
 		calc: {
 			allFieldsAreRequired: 'All fields are required!',

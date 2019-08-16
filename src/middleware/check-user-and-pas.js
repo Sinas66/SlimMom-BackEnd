@@ -50,6 +50,10 @@ const checkBodyFornicknameAndPass = (req, res, next) => {
 		sendError(errors.auth.passRequired); // Если нет Password то шлем ошибку
 		return;
 	}
+	if (user.password.length < 5) {
+		sendError(errors.auth.passInvalidLength); // Если нет Password то шлем ошибку
+		return;
+	}
 	if (user.userData) {
 		const { height, currentWeight, age, desiredWeight } = req.body.userData;
 		if (!age && !height && !currentWeight && !desiredWeight) {
