@@ -32,6 +32,13 @@ const authCheck = (req, res, next) => {
 							message: 'user not auth',
 						});
 					}
+					if (!findUser.token) {
+						res.status(401).json({
+							status: 'error',
+							message: 'token doesnt exist',
+						});
+					}
+
 					req.user = findUser;
 					next();
 				})

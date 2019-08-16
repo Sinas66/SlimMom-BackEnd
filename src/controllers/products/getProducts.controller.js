@@ -31,8 +31,8 @@ const getProducts = (req, res) => {
 				...formatProduct,
 				color:
 					el.groupBloodNotAllowed[String(groupBlood)] === true
-						? '#f00'
-						: '#0f0',
+						? '#c32323'
+						: '#000',
 			};
 		}
 		return formatProduct;
