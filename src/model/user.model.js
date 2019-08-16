@@ -102,7 +102,7 @@ UserSchema.pre('findOneAndUpdate', function updateVersion() {
 
 UserSchema.pre('save', function() {
 	this.hashPassword();
-	this.createNewToken();
+	// this.createNewToken();
 });
 
 UserSchema.methods.comparePassword = function comparePassword(pass) {
@@ -120,16 +120,12 @@ UserSchema.methods.createNewToken = async function createNewToken() {
 		},
 	);
 	this.token = token;
-	console.log(this);
+	// console.log(this);
 	await this.save(err => {
 		console.log(err);
 	});
 	try {
-		return {
-			nickname: this.nickname,
-			token: this.token,
-			userData: this.userData,
-		};
+		return this.token;
 	} catch {
 		return `something goes wrong on createNewToken User Method;(`;
 	}

@@ -45,13 +45,20 @@ const register = (req, res) => {
 
 	newUser
 		.save()
-		.then(userFromDB => ({
-			nickname: userFromDB.nickname,
-			token: userFromDB.token,
-			userData: userFromDB.userData,
-			createdAt: userFromDB.createdAt,
-		}))
-		.then(sendResponse)
+		.then(userFromDB => {
+			userFromDB
+				.createNewToken() // Добавляем новый токен
+				.then(token => {
+					const resp = {
+						nickname: userFromDB.nickname,
+						token,
+						userData: userFromDB.userData,
+						createdAt: userFromDB.createdAt,
+					};
+					sendResponse(resp);
+				})
+				.catch(sendError);
+		})
 		.catch(sendError);
 };
 

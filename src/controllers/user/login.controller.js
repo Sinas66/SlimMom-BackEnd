@@ -36,11 +36,19 @@ const login = (req, res) => {
 			}
 			userFromDB
 				.comparePassword(userPasswordReq) // сравниваем пароли
-				.then(resp => {
-					if (!resp) throw errors.passInvalid; // Если пароль не валид, кидаем ошибку
+				.then(isPassValid => {
+					if (!isPassValid) throw errors.passInvalid; // Если пароль не валид, кидаем ошибку
 					userFromDB
 						.createNewToken() // Добавляем новый токен
-						.then(sendResponse)
+						.then(token => {
+							const resp = {
+								nickname: userFromDB.nickname,
+								token,
+								userData: userFromDB.userData,
+								createdAt: userFromDB.createdAt,
+							};
+							sendResponse(resp);
+						})
 						.catch(sendError);
 				})
 				.catch(sendError);

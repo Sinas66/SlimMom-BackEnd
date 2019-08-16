@@ -21,6 +21,7 @@ const getUser = (req, res) => {
 
 	User.findById(userId)
 		.then(user => {
+			// console.log({ user });
 			const respData = {
 				nickname: user.nickname,
 				token: user.token,
