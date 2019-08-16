@@ -111,12 +111,19 @@ UserSchema.methods.comparePassword = function comparePassword(pass) {
 
 UserSchema.methods.createNewToken = async function createNewToken() {
 	const userId = this._id;
-	const token = jwt.sign({ userId, createdDate: Date.now() }, SECRET_KEY, {
-		expiresIn: tokenLifeTime,
-		noTimestamp: true,
-	});
+	const token = await jwt.sign(
+		{ userId, createdDate: Date.now() },
+		SECRET_KEY,
+		{
+			expiresIn: tokenLifeTime,
+			noTimestamp: true,
+		},
+	);
 	this.token = token;
-
+	console.log(this);
+	await this.save(err => {
+		console.log(err);
+	});
 	try {
 		return {
 			nickname: this.nickname,
