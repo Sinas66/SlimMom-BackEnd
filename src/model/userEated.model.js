@@ -41,6 +41,7 @@ const UserEatedSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'User',
 	},
+	dailyRate: { type: Number },
 });
 
 const UserEated = mongoose.model('UserEated', UserEatedSchema, 'eats');

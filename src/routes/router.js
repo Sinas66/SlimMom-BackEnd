@@ -22,6 +22,7 @@ const {
 	createUserEated,
 	deleteUserEated,
 	getUserEated,
+	getAchevement,
 } = require('../controllers/userEated');
 
 const noSuchPageHandler = (req, res) => {
@@ -65,8 +66,9 @@ router
 		checkCreateNewEated,
 		createUserEated,
 	) // ? Записати що юзер з'їв і вернути новий документ
-	.delete('/user/eats/:productId', authCheck, deleteUserEated) //! Видалити що юзер з'їв - видалити документ по ід
-	.get('/user/eats/:date', authCheck, getUserEated) // Получить продукты юзера за определенный день
+	.delete('/user/eats/:productId', deleteUserEated) //! Видалити що юзер з'їв - видалити документ по ід
+	.get('/user/eats/:date', getUserEated) // Получить продукты юзера за определенный день
+	.get('/user/eats/achievement/:date', getAchevement) // Получить продукты юзера за определенный день
 
 	// Роут для цитат
 	.post('/quotes', authCheck, addFileToReq, createQuotes)
