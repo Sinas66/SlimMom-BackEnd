@@ -43,6 +43,8 @@ const createQuotes = (req, res) => {
 		},
 	}));
 
+	console.log({ getFiledArray });
+
 	Quotes.insertMany(getFiledArray, {
 		bypassDocumentValidation: true,
 		ordered: false,

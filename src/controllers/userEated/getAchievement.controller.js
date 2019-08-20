@@ -67,6 +67,24 @@ const getAchevement = async (req, res) => {
 			}
 		}
 
+		for (let i = 0; i < 30; i += 1) {
+			if (resp.dailyRate[i] === 0) {
+				for (let k = 1; k < 30; k += 1) {
+					if (resp.dailyRate[i - k] !== 0) {
+						if (resp.dailyRate[i] === 0) {
+							resp.dailyRate[i] = resp.dailyRate[i - k];
+						}
+					}
+				}
+			}
+		}
+
+		for (let i = 0; i < 30; i += 1) {
+			if (resp.eatedProducts[i] === 0 && !resp.dailyRate[i]) {
+				resp.eatedProducts[i] = null;
+			}
+		}
+
 		return resp;
 	};
 

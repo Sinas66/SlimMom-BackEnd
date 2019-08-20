@@ -10,8 +10,6 @@ const createUserEated = async (req, res) => {
 	const { date } = req.body;
 	const { dailyRate } = req.body;
 
-	console.log({ dailyRate });
-
 	const sendError = err => {
 		let message = err.message ? err.message : err;
 		if (err && err.message.includes('_id')) {
