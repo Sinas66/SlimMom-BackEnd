@@ -6,7 +6,7 @@ const excelToJson = require('convert-excel-to-json');
 const Quotes = require(`../../model/quotes.model`);
 
 const createQuotes = (req, res) => {
-	const sheetName = `Цитаты`;
+	const sheetName = `Лист1`;
 
 	const productsFilePath = path.join(
 		__dirname,
