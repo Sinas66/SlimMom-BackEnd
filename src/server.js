@@ -25,6 +25,9 @@ const startServer = port => {
 			morgan(':method :url :status :res[content-length] - :response-time ms'),
 		) // В консоле показывает действие
 		.use('/', express.static(staticPublicPath)) // Возвращяет index.html и дает доступ к файлам
+		.use('/dashboard', express.static(staticPublicPath))
+		.use('/dashboard/diary', express.static(staticPublicPath))
+		.use('/', express.static(staticPublicPath))
 		// .use(addTokenToReq) // добавляет токен в req.user.token если он есть
 		.use(
 			'/doc',
